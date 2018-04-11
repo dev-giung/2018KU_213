@@ -19,8 +19,8 @@ typedef struct student {
 
 /*
 	function: 이중연결리스트를 초기화 
-	Note	: 
-	input	: 
+	Note	: llink, rlink 모두 자기자신을 가리키도록 함 
+	input	: student형 포인터 (call by reference) 
 	output	: (NULL)
 */
 void init(student *phead) {
@@ -32,8 +32,8 @@ void init(student *phead) {
 /*
 	function: 이중연결리스트에 요소를 삽입
 	Note	: 요소들의 score 값이 내림차순이 되도록 삽입함. 
-	input	: 
-	output	: 
+	input	: student형 포인터 (call by reference) 
+	output	: (NULL)
 */
 void dinsert_node(student *phead, student *new_node) {
 	
@@ -73,24 +73,49 @@ void display(student *phead) {
 
 /*
 	function: 성적 상위 n명 데이터 출력
-	Note	:
-	input	:
+	Note	: n이 전체 데이터 수보다 클 시에는 있는만큼(전체 데이터)만 출력 후 별도로 메세지 출력 
+	input	: student형 포인터 (call by reference) 
 	output	: (NULL)
 */
 void displayHigh(student *phead, int n) {
 	
-	// something
+	student *p = phead;
+	int cnt = n;
+	
+	while(cnt) {
+		p = p -> rlink;
+		if(p == phead) {
+			printf("모든 데이터를 출력하였습니다. 남은 %d개의 데이터는 출력되지 않습니다.", cnt);
+			break;
+		} else {
+			printf("< |%x| %d |%x| >\n", p -> llink, p -> score, p -> rlink);
+		}
+		cnt--;
+	}
+	printf("\n");
 }
 
 /*
 	function: 성적 하위 n명 데이터 출력
-	Note	:
-	input	:
+	Note	: n이 전체 데이터 수보다 클 시에는 있는만큼(전체 데이터)만 출력 후 별도로 메세지 출력 
+	input	: student형 포인터 (call by reference) 
 	output	: (NULL)
 */
 void displayLow(student *phead, int n) {
 	
-	// something
+	student *p = phead;
+	int cnt = n;
+	
+	while(cnt) {
+		p = p -> llink;
+		if(p == phead) {
+			printf("모든 데이터를 출력하였습니다. 남은 %d개의 데이터는 출력되지 않습니다.", cnt);
+			break;
+		} else {
+			printf("< |%x| %d |%x| >\n", p -> llink, p -> score, p -> rlink);
+		}
+		cnt--;
+	}
 }
 
 /*
@@ -111,27 +136,18 @@ int main() {
 		return 1;
 	}
 	
+	// 변수선언 
 	student head_node;
-	student *data[10];
-	int i;
+	student *data[100];
+	int index = 0;
 	
+	// 랜덤시드설정 
+	srand(time(NULL));
+
+	// 리스트 초기화
 	init(&head_node);
-	display(&head_node);
 	
-	data[0] = (student *)malloc(sizeof(student));
-	data[0] -> score = 10;
-	dinsert_node(&head_node, data[0]);
-	display(&head_node);
 	
-	data[1] = (student *)malloc(sizeof(student));
-	data[1] -> score = 20;
-	dinsert_node(&head_node, data[1]);
-	display(&head_node);
-	
-	data[2] = (student *)malloc(sizeof(student));
-	data[2] -> score = 5;
-	dinsert_node(&head_node, data[2]);
-	display(&head_node);
 	
 	// 프로그램 종료 
 	return 0;
