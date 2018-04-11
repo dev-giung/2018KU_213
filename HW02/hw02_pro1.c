@@ -37,21 +37,26 @@ void init(student *phead) {
 */
 void dinsert_node(student *phead, student *new_node) {
 	
+	// cur_node 포인터는 head부터 가리킴 
 	student *cur_node = phead;
 	
 	while(1) {
 		
+		// 마지막(가장 score 작은) 요소인 경우 while문 종료 
 		if(cur_node -> rlink == phead) {
 			break;
 		}
 		
+		// 적정 위치(다음 요소보다 score가 큰 위치) 찾은 경우 while문 종료 
 		if(cur_node -> rlink -> score < new_node -> score) {
 			break;
 		}
 		
+		// 다음 요소를 가리킴.
 		cur_node = cur_node -> rlink;
 	}
 	
+	// 요소 삽입 
 	( new_node -> llink ) = cur_node;
 	( new_node -> rlink ) = ( cur_node -> rlink );
 	( ( cur_node -> rlink ) -> llink ) = new_node;
