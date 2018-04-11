@@ -27,7 +27,6 @@ void init(student *phead) {
 	
 	(phead -> llink) = phead;
 	(phead -> rlink) = phead;
-	phead -> score = 100;
 }
 
 /*
@@ -36,23 +35,27 @@ void init(student *phead) {
 	input	: 
 	output	: 
 */
-void dinsert_node(student *before, student *new_node) {
+void dinsert_node(student *phead, student *new_node) {
+	
+	student *cur_node = phead;
 	
 	while(1) {
-		if(before -> rlink == before) {
+		
+		if(cur_node -> rlink == phead) {
 			break;
 		}
-		if(new_node -> score > before -> rlink -> score) {
+		
+		if(cur_node -> rlink -> score < new_node -> score) {
 			break;
-		} else {
-			before = before -> rlink;
 		}
+		
+		cur_node = cur_node -> rlink;
 	}
 	
-	( new_node -> llink ) = before;
-	( new_node -> rlink ) = ( before -> rlink );
-	( ( before -> rlink ) -> llink ) = new_node;
-	( before -> rlink ) = new_node;
+	( new_node -> llink ) = cur_node;
+	( new_node -> rlink ) = ( cur_node -> rlink );
+	( ( cur_node -> rlink ) -> llink ) = new_node;
+	( cur_node -> rlink ) = new_node;
 }
 
 void display(student *phead) {
@@ -123,8 +126,6 @@ int main() {
 	data[2] = (student *)malloc(sizeof(student));
 	data[2] -> score = 5;
 	dinsert_node(&head_node, data[2]);
-	display(&head_node);
-	
 	display(&head_node);
 	
 	// 프로그램 종료 
