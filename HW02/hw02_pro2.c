@@ -42,6 +42,32 @@ int pop(LinkedStackType *s) {
 	}
 }
 
+void stackWay(LinkedStackType *s, int map[][10], int cur) {
+	
+	int row = cur / 10;
+	int col = cur % 10;
+	
+	if( row + 1 < 10 && map[row + 1][col] == 0 ) {
+		printf("push (row: %d, col: %d)\n", row + 1, col);
+		push(s, (row + 1) * 10 + col);
+	}
+	
+	if( row - 1 > -1 && map[row - 1][col] == 0 ) {
+		printf("push (row: %d, col: %d)\n", row - 1, col);
+		push(s, (row - 1) * 10 + col);
+	}
+	
+	if( col - 1 > -1 && map[row][col - 1] == 0 ) {
+		printf("push (row: %d, col: %d)\n", row, col - 1);
+		push(s, row * 10 + (col - 1));
+	}
+	
+	if( col + 1 < 10 && map[row][col + 1] == 0 ) {
+		printf("push (row: %d, col: %d)\n", row, col + 1);
+		push(s, row * 10 + (col + 1));
+	}
+}
+
 /*
 	function: main ÇÔ¼ö
 	Note	: 
@@ -64,5 +90,20 @@ int main() {
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	};
 	
+	int current = 10;
+	
+	LinkedStackType s;
+	init(&s);
+	
+	while(1) {
+		
+		if(current == 89) {
+			break;
+		}
+		stackWay(&s, maze, current);
+		maze[current / 10][current % 10] = 2;
+		current = pop(&s);
+		printf("pop (row: %d, col: %d)\n", current / 10, current % 10);
+	}
 	
 }
