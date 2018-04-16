@@ -63,14 +63,6 @@ void dinsert_node(student *phead, student *new_node) {
 	( cur_node -> rlink ) = new_node;
 }
 
-void display(student *phead) {
-	student *p;
-	for(p = phead -> rlink; p != phead; p = p -> rlink) {
-		printf("< |%x| %d |%x| >\n", p -> llink, p -> score, p -> rlink);
-	}
-	printf("\n");
-}
-
 /*
 	function: 성적 상위 n명 데이터 출력
 	Note	: n이 전체 데이터 수보다 클 시에는 있는만큼(전체 데이터)만 출력 후 별도로 메세지 출력 
@@ -88,7 +80,7 @@ void displayHigh(student *phead, int n) {
 			printf("모든 데이터를 출력하였습니다. 남은 %d개의 데이터는 출력되지 않습니다.", cnt);
 			break;
 		} else {
-			printf("< |%x| %d |%x| >\n", p -> llink, p -> score, p -> rlink);
+			printf("< %d\t%s\t%3d >\n", p -> student_number, p -> name, p -> score);
 		}
 		cnt--;
 	}
@@ -112,7 +104,7 @@ void displayLow(student *phead, int n) {
 			printf("모든 데이터를 출력하였습니다. 남은 %d개의 데이터는 출력되지 않습니다.", cnt);
 			break;
 		} else {
-			printf("< |%x| %d |%x| >\n", p -> llink, p -> score, p -> rlink);
+			printf("< %d\t%s\t%3d >\n", p -> student_number, p -> name, p -> score);
 		}
 		cnt--;
 	}
@@ -139,6 +131,8 @@ int main() {
 	// 변수선언 
 	student head_node;
 	student *data[100];
+	int input_sn;
+	char input_name[100];
 	int index = 0;
 	
 	// 랜덤시드설정 
@@ -147,8 +141,35 @@ int main() {
 	// 리스트 초기화
 	init(&head_node);
 	
+	// 데이터 파일 모든 행의 데이터를 이중연결리스트에 삽입 
+	while(EOF != fscanf(f, "%d	%[^\n]s", &input_sn, &input_name)) {
+		
+		// 메모리 확보 
+		data[index] = (student *)malloc(sizeof(student));
+		
+		// student_number에는 파일로부터의 학번값 넣어줌
+		data[index] -> student_number = input_sn;
+		
+		// name에는 파일로부터의 이름값 넣어줌 
+		strcpy(data[index] -> name, input_name);
+		
+		// score에는 0 ~ 100 랜덤값 넣어줌
+		data[index] -> score = rand() % 101;
+		
+		// 내부변수가 모두 입력된 노드를 리스트에 삽입
+		dinsert_node(&head_node, data[index]);
+		
+		index++;
+	}
 	
+	// 성적 상위 10명의 정보 출력
+	printf("성적 상위 10명의 <학번 이름 점수>: \n");
+	displayHigh(&head_node, 10);
 	
-	// 프로그램 종료 
+	// 성적 하위 10명의 정보 출력
+	printf("성적 하위 10명의 <학번 이름 점수>: \n");
+	displayLow(&head_node, 10);
+	
+	// 프로그램 종료
 	return 0;
 }
