@@ -8,7 +8,7 @@
 - pro2: recursion
 - pro3: recursion
 
-### HW02 (~ 180502)
+### HW02 (~ 180509)
 - pro1: doubly linked list
 - pro2: stack
 - pro3: queue
