@@ -91,11 +91,11 @@ void find_path(int maze[][10], StackType * s) {					// 문제 2번의 B조건에 맞는 �
 	while (1) {
 		p = pop(s);												// 미로 탐색 시, 가능한 방향의 좌표를 push하기 전 현재 위치를 먼저 pop해주어야 함
 		x = p.xpos;y = p.ypos;state = 0;						
+		printf("pop : (%d,%d)\n", x, y);						// 현 위치 출력
 		int i = 0;
 		for (i = 0;i < 4;i++) { switch_on[i] = 0; }
 		if (p.xpos == 8 && p.ypos == 9) break;					// 반복문의 종료 조건. (8,9)에 도달하였으면 탈출.
 		maze[x][y] = VISITED;									// pop한 현재 위치를 VISITED로 설정.
-		printf("pop : (%d,%d)\n", x, y);						// 현 위치 출력
 		if (is_right(maze, x + 1, y, s)) { state++; switch_on[0] = 1; }		//아래
 		if (is_right(maze, x - 1, y, s)) { state++; switch_on[1] = 1; }		//위
 		if (is_right(maze, x, y - 1, s)) { state++; switch_on[2] = 1; }		//왼쪽

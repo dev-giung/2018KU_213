@@ -42,6 +42,13 @@ int pop(LinkedStackType *s) {
 	}
 }
 
+void printPath(LinkedStackType *s) {
+	
+	int data = pop(s);
+	printf("%d\n", data);
+	printPath(s);
+}
+
 void stackWay(LinkedStackType *s, int map[][10], int cur) {
 	
 	int row = cur / 10;
@@ -93,7 +100,9 @@ int main() {
 	int current = 10;
 	
 	LinkedStackType s;
+	LinkedStackType path;
 	init(&s);
+	init(&path);
 	
 	while(1) {
 		
@@ -103,7 +112,10 @@ int main() {
 		stackWay(&s, maze, current);
 		maze[current / 10][current % 10] = 2;
 		current = pop(&s);
+		push(&path, current);
 		printf("pop (row: %d, col: %d)\n", current / 10, current % 10);
 	}
 	
+	printf("Result Path:\n");
+	printPath(&path);
 }
