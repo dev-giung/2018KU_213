@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct StackNode {
 	int item;
@@ -44,9 +45,14 @@ int pop(LinkedStackType *s) {
 
 void printPath(LinkedStackType *s) {
 	
-	int data = pop(s);
-	printf("%d\n", data);
-	printPath(s);
+	int data;
+	if( is_empty(s) ) {
+		return;
+	} else {
+		data = pop(s);
+		printPath(s);
+		printf("(row:%2d, col:%2d) -> ", data / 10, data % 10);
+	}
 }
 
 void stackWay(LinkedStackType *s, int map[][10], int cur) {
@@ -116,6 +122,7 @@ int main() {
 		printf("pop (row: %d, col: %d)\n", current / 10, current % 10);
 	}
 	
-	printf("Result Path:\n");
+	printf("\nResult Path:\n");
 	printPath(&path);
+	printf("finish");
 }
