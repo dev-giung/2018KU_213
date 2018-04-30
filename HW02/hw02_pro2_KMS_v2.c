@@ -69,7 +69,8 @@ void find_path(int maze[][10], StackType * s) {					// 문제 2번의 B조건에 맞는 �
 		x = p.xpos;y = p.ypos;state = 0;
 		printf("pop : (%d,%d)\n", x, y);						// 현 위치 출력
 		push(&finalStack, x, y);
-		for (int i = 0;i < 4;i++) { switch_on[i] = 0; }
+		int i;
+		for (i = 0;i < 4;i++) { switch_on[i] = 0; }
 		if (p.xpos == 8 && p.ypos == 9) break;					// 반복문의 종료 조건. (8,9)에 도달하였으면 탈출.
 		maze[x][y] = VISITED;									// pop한 현재 위치를 VISITED로 설정.
 
