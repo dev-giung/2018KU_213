@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define SIZE_QUEUE 100	//the maximum size of the news_queue
+#define SIZE_QUEUE 10000	//the maximum size of the news_queue
 #define CAPACITY 6		//the capacity of ZNN.com (per sec)
 #define NUM_USER 20		//the number of users
 #define NUM_LOOP 100	//the number of loops
@@ -25,23 +25,50 @@ ContentFidelity currentFidelity = Video;
 
 /**/
 
-void init(Queue *q) {
-	q->front = 0;
-	q->rear = 0;
-}
-
 int is_empty(Queue *q) {
 	return ( q->front == q->rear );
 }
 
 int is_full(Queue *q) {
-	return ( (q->rear+1)%SIZE_QUEUE == q->front );
+	return ( (q->rear + 1) % SIZE_QUEUE == q->front );
+}
+
+int sizeofQueue(Queue *q) {
+	
+	unsigned int i = q->front;
+	int count = 0;
+	
+	while( !(is_empty(q)) && (i % SIZE_QUEUE) < (q->rear % SIZE_QUEUE) ) {
+		i = (i + 1) % SIZE_QUEUE;
+		count++;
+	}
+	
+	return count;
+}
+
+int delayofQueue(Queue *q) {
+	
+	unsigned int i = q->front;
+	int delay = 0;
+	
+	while( !(is_empty(q)) && (i % SIZE_QUEUE) < (q->rear % SIZE_QUEUE) ) {
+		i = (i + 1) % SIZE_QUEUE;
+		if(q->queue[i].fidelity == Video) {
+			delay = delay + 3;
+		} else if(q->queue[i].fidelity == Image) {
+			delay = delay + 2;
+		} else if(q->queue[i].fidelity == Text) {
+			delay = delay + 1;
+		}
+	}
+	
+	return delay;
 }
 
 void enqueue(Queue *q, news item) {
 	if( is_full(q) ) {
 		printf("Queue is full");
-		exit(1);
+		//exit(1);
 	} else {
 		q->rear = (q->rear+1) % SIZE_QUEUE;
 		q->queue[q->rear] = item;
@@ -51,7 +78,7 @@ void enqueue(Queue *q, news item) {
 news dequeue(Queue *q) {
 	if( is_empty(q) ) {
 		printf("Queue is empty");
-		exit(1);
+		//exit(1);
 	} else {
 		q->front = (q->front+1) % SIZE_QUEUE;
 		return q->queue[q->front];
@@ -74,8 +101,21 @@ void request(Queue *q) {
 	printf("\n");
 }
 
-void setFidelity() {
-	printf("Average waiting time: %.6f, Current Quality: %d\n", 3, 123412);
+void setFidelity(Queue *q) {
+	
+	double AverageDelay = 0.0;
+	
+	if( !(is_empty(q)) ) {
+		AverageDelay = (double)delayofQueue(q) / sizeofQueue(q);
+	}
+	
+	if( AverageDelay >= 3 && currentFidelity <= 1) {
+		currentFidelity++;
+	} else if( AverageDelay <= 2 && currentFidelity >= 1) {
+		currentFidelity--;
+	}
+	
+	printf("Average waiting time: %.6f, Current Quality: %d\n", AverageDelay, currentFidelity);
 }
 
 void provide(Queue *q) {
@@ -123,7 +163,7 @@ void main() {
 		printf("\n=======%d seconds======\n", nthLoop);
 		//users can request contents every two loops
 		if (nthLoop % 2 == 0) {
-			setFidelity();
+			setFidelity(&news_queue);
 			request(&news_queue);
 		}
 		printQueue(&news_queue);
