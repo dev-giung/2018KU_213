@@ -68,21 +68,27 @@ int delayofQueue(Queue *q) {
 void enqueue(Queue *q, news item) {
 	if( is_full(q) ) {
 		printf("Queue is full");
-		//exit(1);
-	} else {
-		q->rear = (q->rear+1) % SIZE_QUEUE;
-		q->queue[q->rear] = item;
+		return;
 	}
+	q->rear = (q->rear+1) % SIZE_QUEUE;
+	q->queue[q->rear] = item;
 }
 
 news dequeue(Queue *q) {
 	if( is_empty(q) ) {
 		printf("Queue is empty");
-		//exit(1);
-	} else {
-		q->front = (q->front+1) % SIZE_QUEUE;
-		return q->queue[q->front];
+		return;
 	}
+	q->front = (q->front+1) % SIZE_QUEUE;
+	return q->queue[q->front];
+}
+
+news peek(Queue *q) {
+	if( is_empty(q) ) {
+		printf("Queue is empty");
+		return;
+	}
+	return q->queue[(q->front + 1) % SIZE_QUEUE];
 }
 
 void request(Queue *q) {
@@ -122,22 +128,26 @@ void provide(Queue *q) {
 	
 	int curCap = 0, size = 0;
 	
-	if(currentFidelity == Video) {
-		size = 3;
-	} else if(currentFidelity == Image) {
-		size = 2;
-	} else if(currentFidelity == Text) {
-		size = 1;
-	}
-	
 	printf("Providing(DEQUEUE): ");
 	
 	while(1) {
 		
+		news temp = peek(q);
+		
+		if( temp.fidelity == Video ) {
+			size = 3;
+		} else if( temp.fidelity == Image ) {
+			size = 2;
+		} else if( temp.fidelity == Text ) {
+			size = 1;
+		}
+		
 		if(curCap + size > CAPACITY) {
 			break;
 		}
-		news temp = dequeue(q);
+		
+		temp = dequeue(q);
+		
 		printf("(%u, %d), ", temp.requestedBy, temp.fidelity);
 		curCap = curCap + size;
 	}
