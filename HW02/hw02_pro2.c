@@ -170,7 +170,8 @@ void find_path(int maze[][10], StackType * s) {
 		x = p.xpos;y = p.ypos;state = 0;						// p의 x,y 좌표를 변수 x,y에 저장. 매 이동마다 state는 0으로 초기화.
 		printf("pop : (%d,%d)\n", x, y);						// 현 위치 출력
 		push(&finalStack, x, y);								// pop한 좌표들을 finalStack에 push. 미로의 최종 경로 출력 시 방문한 곳, 즉 pop한 좌표들을 
-		for (int i = 0;i < 4;i++) { switch_on[i] = 0; }			// 매 이동마다(반복마다) switch_on 배열의 각 요소는 0으로 초기화.
+		int i;
+		for (i = 0;i < 4;i++) { switch_on[i] = 0; }			// 매 이동마다(반복마다) switch_on 배열의 각 요소는 0으로 초기화.
 		if (p.xpos == 8 && p.ypos == 9) break;					// 반복문의 종료 조건. (8,9)에 도달하였으면 탈출.
 		maze[x][y] = VISITED;									// pop한 현재 위치를 VISITED로 설정.
 
