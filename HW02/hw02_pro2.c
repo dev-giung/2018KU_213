@@ -4,57 +4,142 @@
 #define BACKTRACKED 3				// 어느 곳으로도 더 이상 나아갈 곳이 없다면 그 지점엔 BACKTRACKED로 설정(다시 돌아가야 하므로)
 #define WAITING 4					// 상하좌우 탐색 시 나아갈 위치가 존재한다면 그 지점에 도달하기 전 미리 WAITING으로 표시
 
-typedef struct Point2D {				// 2차원 배열 상의 X,Y 좌표 설정
+/*
+	Def : Point2D 구조체 정의
+	Note: 2차원 배열 상의 x, y 좌표를 나타냄 
+*/
+typedef struct Point2D {
+	
 	int xpos;
 	int ypos;
-}Point;
+} Point;
 
-typedef struct Stack {
+/*
+	Def : StackNode 구조체 정의
+	Note: 스택노드를 나타냄 
+*/
+typedef struct StackNode {
+	
+	// Data Field: Point2D
 	Point p;
-	struct Stack * link;
-}StackNode;
+	
+	// Link Field
+	struct Stack *link;
+} StackNode;
 
+/*
+	Def : StackType 구조체 정의
+	Note: 스택노드들이 쌓인 스택을 나타냄
+*/
 typedef struct StackType {
-	StackNode * top;
-}StackType;
+	
+	// top 포인터는 마지막에 쌓인 스택노드를 가리킴 
+	StackNode *top;
+} StackType;
 
-void init(StackType * s) {
+/*
+	function: 스택을 초기화 
+	Note	: 스택의 top 포인터가 NULL을 가리키게 함 
+	input	: StackType형 포인터 (call by reference) 
+	output	: (NULL)
+*/
+void init(StackType *s) {
+	
 	s->top = NULL;
 }
 
-int is_empty(StackType * s) {
-	return s->top == NULL;
+/*
+	fuction: 스택이 비어있는지 확인
+	Note   :
+	input  : StackType형 포인터 (call by reference) 
+	output : int 
+*/
+int is_empty(StackType *s) {
+	
+	return ( s->top == NULL );
 }
 
-void push(StackType * s, int xpos, int ypos) {									// 스택의 push 함수. 매개변수로 전달된 xpos와 ypos는 2차원 좌표를 저장할 스택의 특성 상 각각 x좌표 y좌표를 의미
-	StackNode * new_node = (StackNode*)malloc(sizeof(StackNode));
-	if (new_node == NULL) { fprintf(stderr, "error!");return; }
-	else {
+/*
+	function: 스택의 push 함수 
+	Note    : 스택에 새로운 스택노드를 push함 
+	input   : s(StackType *) : 스택노드가 삽입될 스택 (call by reference)
+			  xpos(int) : 삽입될 스택노드의 내부변수 
+			  ypos(int) : 삽입될 스택노드의 내부변수
+	output  : (NULL)
+*/
+void push(StackType *s, int xpos, int ypos) {
+	
+	// 새로운 스택노드 메모리 할당 
+	StackNode *new_node = (StackNode*)malloc(sizeof(StackNode));
+	
+	if (new_node == NULL) {
+		
+		// 메모리 할당이 제대로 되었는지 확인 
+		fprintf(stderr, "error!");
+		return;
+	} else {
+		
+		// 새로운 스택노드 내부변수 입력 
 		new_node->p.xpos = xpos;
 		new_node->p.ypos = ypos;
 		new_node->link = s->top;
+		
+		// 새로운 스택노드를 스택에 쌓음 
 		s->top = new_node;
 	}
 }
 
-Point pop(StackType * s) {														// 스택의 pop 함수. 스택의 가장 앞 노드를 제거 후, 반환.
-	if (!is_empty(s)) {
-		StackNode * removed = s->top;
+/*
+	function: 스택의 pop 함수 
+	Note    : 스택에 마지막으로 쌓인 스택노드를 pop함
+	input   : StackType형 포인터 (call by reference) 
+	output  : Point
+*/
+Point pop(StackType * s) {
+	
+	if ( !(is_empty(s)) ) {
+		
+		// removed 포인터 스택의 최상단에 위치한 노드 가리킴 
+		StackNode *removed = s->top;
+		
+		// tmp(Point)에 대상노드의 내부변수 저장 
 		Point tmp;
 		tmp.xpos = removed->p.xpos;
 		tmp.ypos = removed->p.ypos;
+		
+		// 대상노드 스택에서 삭제 
 		s->top = s->top->link;
 		free(removed);
+		
+		// tmp(대상노드가 갖고있던 Point 값) 반환 
 		return tmp;
 	}
 }
 
-
-int is_right(int maze[][10], int xpos, int ypos, StackType * s) {									// 위치 탐색시 적절성 판단하는 함수
-	if (xpos < 0 || ypos < 0 || xpos>9 || ypos>9) { return 0; }										// 위치가 배열의 범위를 넘어서면 0을 반환
-	if (maze[xpos][ypos]==0||maze[xpos][ypos]==WAITING) {											// 위치가 1이거나 VISITED 및 BACKTRACKED 어느 것도 아닌 0 혹은 WAITING 일 때에만 1을 반환
+/*
+	function: 경로 탐색시 적절성 판단하는 함수
+	Note    : 
+	input   : maze(int[][10]) : 배열로 구성된 미로 
+			  xpos(int) : 미로에서의 x좌표 
+			  ypos(int) : 미로에서의 y좌표 
+			  s(StackType *) : StackType형 포인터 (call by reference)
+	output  : int
+*/
+int is_right(int maze[][10], int xpos, int ypos, StackType *s) {
+	
+	if ( xpos < 0 || ypos < 0 || xpos > 9 || ypos > 9 ) {
+		
+		// 대상위치가 배열의 index를 넘어서면 0을 반환 
+		return 0;
+	}
+	
+	if ( maze[xpos][ypos] == 0 || maze[xpos][ypos] == WAITING ) {
+		
+		// 대상위치가 유효하면(0이거나 WAITING이면) 1을 반환 
 		return 1;
 	}
+	
+	// 대상위치가 유효하지 않으면(1이거나 VISITED거나 BACKTRACKED이면) 0을 반환 
 	return 0;
 }
 
