@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct Point2D {
+	int rowPos;
+	int colPos;
+} Point2D;
+
 typedef struct StackNode {
-	int item;
+	Point2D item;
 	struct StackNode *link;
 } StackNode;
 
@@ -18,7 +23,7 @@ int is_empty(LinkedStackType *s) {
 	return (s -> top == NULL);
 }
 
-void push(LinkedStackType *s, int item) {
+void push(LinkedStackType *s, Point2D item) {
 	StackNode *temp = (StackNode *)malloc(sizeof(StackNode));
 	if(temp == NULL) {
 		printf("메모리 할당에러\n");
@@ -30,13 +35,13 @@ void push(LinkedStackType *s, int item) {
 	}
 }
 
-int pop(LinkedStackType *s) {
+Point2D pop(LinkedStackType *s) {
 	if( is_empty(s) ) {
 		printf("스택이 비어있음\n");
 		exit(1);
 	} else {
 		StackNode *temp = s -> top;
-		int item = temp -> item;
+		Point2D item = temp -> item;
 		s -> top = s -> top -> link;
 		free(temp);
 		return item;
@@ -45,39 +50,53 @@ int pop(LinkedStackType *s) {
 
 void printPath(LinkedStackType *s) {
 	
-	int data;
+	Point2D data;
 	if( is_empty(s) ) {
 		return;
 	} else {
 		data = pop(s);
 		printPath(s);
-		printf("(row:%2d, col:%2d) -> ", data / 10, data % 10);
+		printf("(row:%2d, col:%2d) -> ", data.rowPos, data.colPos);
 	}
 }
 
-void stackWay(LinkedStackType *s, int map[][10], int cur) {
+void stackWay(LinkedStackType *s, int map[][10], Point2D cur) {
 	
-	int row = cur / 10;
-	int col = cur % 10;
+	int row = cur.rowPos;
+	int col = cur.colPos;
+	
+	Point2D tmp;
 	
 	if( row + 1 < 10 && map[row + 1][col] == 0 ) {
 		printf("push (row: %d, col: %d)\n", row + 1, col);
-		push(s, (row + 1) * 10 + col);
+		
+		tmp.rowPos = row + 1;
+		tmp.colPos = col;
+		push(s, tmp);
 	}
 	
 	if( row - 1 > -1 && map[row - 1][col] == 0 ) {
 		printf("push (row: %d, col: %d)\n", row - 1, col);
-		push(s, (row - 1) * 10 + col);
+		
+		tmp.rowPos = row - 1;
+		tmp.colPos = col;
+		push(s, tmp);
 	}
 	
 	if( col - 1 > -1 && map[row][col - 1] == 0 ) {
 		printf("push (row: %d, col: %d)\n", row, col - 1);
-		push(s, row * 10 + (col - 1));
+		
+		tmp.rowPos = row;
+		tmp.colPos = col - 1;
+		push(s, tmp);
 	}
 	
 	if( col + 1 < 10 && map[row][col + 1] == 0 ) {
 		printf("push (row: %d, col: %d)\n", row, col + 1);
-		push(s, row * 10 + (col + 1));
+		
+		tmp.rowPos = row;
+		tmp.colPos = col + 1;
+		push(s, tmp);
 	}
 }
 
@@ -103,7 +122,9 @@ int main() {
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	};
 	
-	int current = 10;
+	Point2D current;
+	current.rowPos = 1;
+	current.colPos = 0;
 	
 	LinkedStackType s;
 	LinkedStackType path;
@@ -112,14 +133,14 @@ int main() {
 	
 	while(1) {
 		
-		if(current == 89) {
+		if(current.rowPos == 8 && current.colPos == 9) {
 			break;
 		}
 		stackWay(&s, maze, current);
-		maze[current / 10][current % 10] = 2;
+		maze[current.rowPos][current.colPos] = 2;
 		current = pop(&s);
 		push(&path, current);
-		printf("pop (row: %d, col: %d)\n", current / 10, current % 10);
+		printf("pop (row: %d, col: %d)\n", current.rowPos, current.colPos);
 	}
 	
 	printf("\nResult Path:\n");
