@@ -122,10 +122,9 @@ Point pop(StackType * s) {
 	input   : maze(int[][10]) : 배열로 구성된 미로 
 			  xpos(int) : 미로에서의 x좌표 
 			  ypos(int) : 미로에서의 y좌표 
-			  s(StackType *) : StackType형 포인터 (call by reference)
 	output  : int
 */
-int is_right(int maze[][10], int xpos, int ypos, StackType *s) {
+int is_right(int maze[][10], int xpos, int ypos) {
 	
 	if ( xpos < 0 || ypos < 0 || xpos > 9 || ypos > 9 ) {
 		
@@ -143,12 +142,29 @@ int is_right(int maze[][10], int xpos, int ypos, StackType *s) {
 	return 0;
 }
 
-
-void find_path(int maze[][10], StackType * s) {					// 미로의 경로를 탐색 및 출력하기 위한 함수
-	int switch_on[4] = { 0,0,0,0 };								// 아래,위,왼쪽,오른쪽 순서대로 미로 탐색 시 조건에 부합할 때 switch_on하기 위한 배열 선언
-	Point p; p.xpos = 1, p.ypos = 0;							// 구조체 변수 p는 미로 탐색 시 현 위치를 저장하기 위한 변수
+/*
+	function: 미로의 경로를 탐색 및 출력하는 함수 
+	Note    : 탐색 순서는 아래, 위, 왼쪽, 오른쪽임 
+	input   : maze(int[][10]) : 배열로 구성된 미로
+			  s(StackType *) : 위치정보(경로)가 쌓이는 스택 
+	output  : (NULL)
+*/
+void find_path(int maze[][10], StackType * s) {
+	
+	// 탐색 방향의 유효성을 나타내는 변수
+	// [0]: 하, [1]: 상, [2]: 좌, [3]: 우 
+	int switch_on[4] = { 0 };
+	
+	// 현위치를 나타내는 Point 변수
+	// 시작점 (1, 0)으로 초기화 
+	Point p;
+	p.xpos = 1, p.ypos = 0;
+	
 	int x = 1, y = 0, state = 0;								// 변수 x, y는 위의 구조체 변수 p의 x좌표, y좌표를 의미하고 변수 state는 미로탐색 시 상,하,좌,우 각각이 도달가능한 곳인지를 나타내기 위한 변수
-	StackType finalStack;init(&finalStack);						// finalStack은 이후 미로의 최종경로 출력에 이용될 스택
+	
+	StackType finalStack;
+	
+	init(&finalStack);						// finalStack은 이후 미로의 최종경로 출력에 이용될 스택
 	while (1) {
 		p = pop(s);												// 미로 탐색 시, 가능한 방향의 좌표를 push하기 전 현재 위치를 먼저 pop해주어야 함. 그 후 현 위치를 p에 저장
 		x = p.xpos;y = p.ypos;state = 0;						// p의 x,y 좌표를 변수 x,y에 저장. 매 이동마다 state는 0으로 초기화.
@@ -158,10 +174,10 @@ void find_path(int maze[][10], StackType * s) {					// 미로의 경로를 탐색 및 출�
 		if (p.xpos == 8 && p.ypos == 9) break;					// 반복문의 종료 조건. (8,9)에 도달하였으면 탈출.
 		maze[x][y] = VISITED;									// pop한 현재 위치를 VISITED로 설정.
 
-		if (is_right(maze, x + 1, y, s)) { state++; switch_on[0] = 1; }		//아래
-		if (is_right(maze, x - 1, y, s)) { state++; switch_on[1] = 1; }		//위
-		if (is_right(maze, x, y - 1, s)) { state++; switch_on[2] = 1; }		//왼쪽
-		if (is_right(maze, x, y + 1, s)) { state++; switch_on[3] = 1; }		//오른쪽
+		if (is_right(maze, x + 1, y)) { state++; switch_on[0] = 1; }		//아래
+		if (is_right(maze, x - 1, y)) { state++; switch_on[1] = 1; }		//위
+		if (is_right(maze, x, y - 1)) { state++; switch_on[2] = 1; }		//왼쪽
+		if (is_right(maze, x, y + 1)) { state++; switch_on[3] = 1; }		//오른쪽
 
 
 		if (state > 0) {
@@ -192,9 +208,15 @@ void find_path(int maze[][10], StackType * s) {					// 미로의 경로를 탐색 및 출�
 
 }
 
-
-
+/*
+	function: main 함수
+	Note	: 
+	input	: (Null)
+	output	: (Null)
+*/
 int main() {
+	
+	// 미로 데이터 입력 
 	int maze[10][10] = {
 		{ 1,1,1,1,1,1,1,1,1,1 },
 		{ 0,0,0,0,1,0,0,0,0,1 },
@@ -207,9 +229,16 @@ int main() {
 		{ 1,0,1,0,0,0,0,1,0,0 },
 		{ 1,1,1,1,1,1,1,1,1,1 }
 	};
-
-	StackType s;				// 미로의 경로 탐색에 이용될 스택. 현 위치를 pop 및 도달 가능한 곳의 좌표들을 수시로 push 하면서 경로를 찾아갈 때 이용될 메인 스택.
-	init(&s);					// 스택의 초기화
-	push(&s, 1, 0);				// 시작점 (1,0)부터 push
-	find_path(maze, &s);		// 경로 탐색 및 출력
+	
+	// 미로의 경로 탐색을 위한 스택
+	StackType s;
+	
+	// 스택 초기화 
+	init(&s);
+	
+	// 시작점 (1, 0) push 후,
+	push(&s, 1, 0);
+	
+	// 경로 탐색 및 출력 
+	find_path(maze, &s);
 }
