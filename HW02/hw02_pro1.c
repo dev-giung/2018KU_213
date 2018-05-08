@@ -19,7 +19,7 @@ typedef struct student {
 
 /*
 	function: 이중연결리스트를 초기화 
-	Note	: llink, rlink 모두 자기자신을 가리키도록 함 
+	Note	: head 노드의 llink, rlink 모두 자기자신을 가리키도록 함 
 	input	: student형 포인터 (call by reference) 
 	output	: (NULL)
 */
@@ -30,33 +30,33 @@ void init(student *phead) {
 }
 
 /*
-	function: 이중연결리스트에 요소를 삽입
-	Note	: 요소들의 score 값이 내림차순이 되도록 삽입함. 
+	function: 이중연결리스트에 노드를 삽입
+	Note	: 이 때 노드들의 score 값이 내림차순이 되도록 삽입함. 
 	input	: student형 포인터 (call by reference) 
 	output	: (NULL)
 */
 void dinsert_node(student *phead, student *new_node) {
 	
-	// cur_node 포인터는 head부터 가리킴 
+	// cur_node 포인터는 head 노드부터 가리킴 
 	student *cur_node = phead;
 	
 	while(1) {
 		
-		// 마지막(가장 score 작은) 요소인 경우 while문 종료 
+		// while문 종료 01: 마지막(가장 score 작은) 노드인 경우  
 		if(cur_node -> rlink == phead) {
 			break;
 		}
 		
-		// 적정 위치(다음 요소보다 score가 큰 위치) 찾은 경우 while문 종료 
+		// while문 종료 02: 적정 위치(다음 노드보다 score가 큰 위치) 찾은 경우
 		if(cur_node -> rlink -> score < new_node -> score) {
 			break;
 		}
 		
-		// 다음 요소를 가리킴.
+		// 다음 노드를 가리킴.
 		cur_node = cur_node -> rlink;
 	}
 	
-	// 요소 삽입 
+	// 노드 삽입 
 	( new_node -> llink ) = cur_node;
 	( new_node -> rlink ) = ( cur_node -> rlink );
 	( ( cur_node -> rlink ) -> llink ) = new_node;
@@ -138,7 +138,7 @@ int main() {
 	// 랜덤시드설정 
 	srand(time(NULL));
 
-	// 리스트 초기화
+	// 이중연결리스트 초기화
 	init(&head_node);
 	
 	// 데이터 파일 모든 행의 데이터를 이중연결리스트에 삽입 
@@ -153,7 +153,7 @@ int main() {
 		// name에는 파일로부터의 이름값 넣어줌 
 		strcpy(data[index] -> name, input_name);
 		
-		// score에는 0 ~ 100 랜덤값 넣어줌
+		// score에는 0 ~ 100의 랜덤값 넣어줌
 		data[index] -> score = rand() % 101;
 		
 		// 내부변수가 모두 입력된 노드를 리스트에 삽입
