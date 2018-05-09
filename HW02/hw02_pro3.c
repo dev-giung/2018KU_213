@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
+
 #define SIZE_QUEUE 100	//the maximum size of the news_queue
 #define CAPACITY 6  //the capacity of ZNN.com (per sec)
 #define NUM_USER 20  //the number of users
@@ -110,7 +111,8 @@ void request(Queue *q) {
 	printf(" >>>>Requesting(ENQUEUE): ");
 	for (i = 0; i < NUM_USER; i++) {
 		int state = 1;		
-		for (j = q->front + 1 ; j < (q->front + 1 + q->num); j++) {//한번 콘텐츠를 요청한 사용자는 그 콘텐츠가 제공되기 전까지 새로운 콘텐츠 요청을 할 수 없다. 조건을 만족하기 위한 검색 과정
+		for (j = q->front + 1 ; j < (q->front + 1 + q->num); j++) {
+		//한번 콘텐츠를 요청한 사용자는 그 콘텐츠가 제공되기 전까지 새로운 콘텐츠 요청을 할 수 없다. 조건을 만족하기 위한 검색 과정
 			if (i == news_queue.queue[j%SIZE_QUEUE].requestedBy){
 				state = 0;						
 			}

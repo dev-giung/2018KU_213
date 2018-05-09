@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// 방문한 지점을 VISITED로 표시 
-#define VISITED 2
+#define VISITED 2 // 방문한 지점은 VISITED로 표시
 
 /*
 	Def : Point2D 구조체 정의
@@ -19,7 +18,7 @@ typedef struct Point2D {
 
 /*
 	Def : StackNode 구조체 정의
-	Note: 스택노드를 나타냄 
+	Note: Point2D 형 아이템을 가진 스택노드를 나타냄 
 */
 typedef struct StackNode {
 	
@@ -36,7 +35,7 @@ typedef struct StackNode {
 */
 typedef struct LinkedStackType {
 	
-	// 최상단의 (가장 마지막에 쌓인) 스택노드를 가리키는 포인터 
+	// 최상단의 스택노드를 가리키는 포인터 
 	StackNode *top;
 } LinkedStackType;
 
@@ -199,13 +198,15 @@ void findPath(LinkedStackType s_temp, LinkedStackType *s_path, int map[][10], Po
 	
 	while(1) {
 		
+		// 경로저장스택(s_path)에 현재위치를 저장 (출력 X)
+		push(s_path, current, 0);
+		
 		// 현재위치가 도착점이면 탐색종료 
 		if(current.colPos == finish.colPos && current.rowPos == finish.rowPos) {
 			break;
 		}
 		
-		// 경로저장스택(s_path)에 현재위치를 저장 및 현재위치를 VISITED로 표시 
-		push(s_path, current, 0);
+		// 현재위치를 VISITED로 표시 
 		map[current.rowPos][current.colPos] = VISITED;
 		
 		// 현재위치에서 이동가능한 위치를 경로탐색스택(s_temp)에 저장 
@@ -261,8 +262,8 @@ int main() {
 	Point2D finish = {8, 9};
 	
 	// 스택 선언 및 초기화
-	// temp는 push/pop이 반복되며 경로탐색에 사용됨
-	// path는 지나온 경로를 저장하는데에 사용됨 
+	// temp : 경로탐색스택
+	// path : 경로저장스택
 	LinkedStackType temp;
 	LinkedStackType path;
 	init(&temp);
@@ -275,4 +276,7 @@ int main() {
 	printf("\nResult Path:\n");
 	printPath(&path);
 	printf("finish");
+	
+	// 프로그램 종료 
+	return 0;
 }
