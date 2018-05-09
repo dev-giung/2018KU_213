@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define VISITED 2					// 방문한 지점에 VISITED로 설정
-#define BACKTRACKED 3				// 어느 곳으로도 더 이상 나아갈 곳이 없다면 그 지점엔 BACKTRACKED로 설정(다시 돌아가야 하므로)
-#define WAITING 4					// 상하좌우 탐색 시 나아갈 위치가 존재한다면 그 지점에 도달하기 전 미리 WAITING으로 표시
+
+/*
+	VISITED    : 방문한 지점
+	BACKTRACKED: 더 이상 갈 곳이 없는 지점 
+	WAITING    : 갈 곳이 남은 지점
+*/
+#define VISITED 2
+#define BACKTRACKED 3
+#define WAITING 4
 
 /*
 	Def : Point2D 구조체 정의
@@ -50,7 +56,7 @@ void init(StackType *s) {
 
 /*
 	fuction: 스택이 비어있는지 확인
-	Note   :
+	Note   : 비어있으면 1을 반환
 	input  : StackType형 포인터 (call by reference) 
 	output : int 
 */
@@ -117,7 +123,7 @@ Point pop(StackType * s) {
 }
 
 /*
-	function: 경로 탐색시 적절성 판단하는 함수
+	function: 경로 탐색시 위치의 적절성 판단하는 함수
 	Note    : 
 	input   : maze(int[][10]) : 배열로 구성된 미로 
 			  xpos(int) : 미로에서의 x좌표 
@@ -231,7 +237,7 @@ int main() {
 		{ 1,1,1,1,1,1,1,1,1,1 }
 	};
 	
-	// 미로의 경로 탐색을 위한 스택
+	// 미로의 경로 탐색을 위한 스택 선언 
 	StackType s;
 	
 	// 스택 초기화 
