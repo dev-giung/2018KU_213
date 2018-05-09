@@ -70,17 +70,30 @@ void dinsert_node(student *phead, student *new_node) {
 */
 void displayHigh(student *phead, int n) {
 	
+	// 헤드노드부터 가리킴 
 	student *p = phead;
+	
+	// 출력할 데이터 수 
 	int cnt = n;
 	
+	// 출력할 데이터가 남아있으면 반복 
 	while(cnt) {
+		
+		// 현재노드의 우측노드 가리킴 
 		p = p -> rlink;
+		
 		if(p == phead) {
+			
+			// 모든 데이터를 출력했을 경우 종료 
 			printf("모든 데이터를 출력하였습니다. 남은 %d개의 데이터는 출력되지 않습니다.", cnt);
 			break;
 		} else {
+			
+			// 가리킨 노드의 < 학번 이름 점수 > 출력 
 			printf("< %d\t%s\t%3d >\n", p -> student_number, p -> name, p -> score);
 		}
+		
+		// 남은 데이터 수 정리 
 		cnt--;
 	}
 	printf("\n");
@@ -94,17 +107,30 @@ void displayHigh(student *phead, int n) {
 */
 void displayLow(student *phead, int n) {
 	
+	// 헤드노드부터 가리킴 
 	student *p = phead;
+	
+	// 출력할 데이터 수 
 	int cnt = n;
 	
+	// 출력할 데이터가 남아있으면 반복 
 	while(cnt) {
+		
+		// 현재노드의 좌측노드 가리킴 
 		p = p -> llink;
+		
 		if(p == phead) {
+			
+			// 모든데이터를 출력했을 경우 종료 
 			printf("모든 데이터를 출력하였습니다. 남은 %d개의 데이터는 출력되지 않습니다.", cnt);
 			break;
 		} else {
+			
+			// 가리킨 노드의 < 학번 이름 점수 > 출력 
 			printf("< %d\t%s\t%3d >\n", p -> student_number, p -> name, p -> score);
 		}
+		
+		// 남은 데이터 수 정리 
 		cnt--;
 	}
 }
