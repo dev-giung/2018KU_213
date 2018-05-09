@@ -1,24 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*
-	VISITED    : 방문한 지점
-	BACKTRACKED: 더 이상 갈 곳이 없는 지점 
-	WAITING    : 갈 곳이 남은 지점
-*/
+// 방문한 지점을 VISITED로 표시 
 #define VISITED 2
-#define BACKTRACKED 3
-#define WAITING 4
 
 /*
 	Def : Point2D 구조체 정의
-	Note: 2차원 배열 상의 x, y 좌표를 나타냄 
+	Note: 2차원 배열 상의 row, col 좌표를 나타냄 
 */
 typedef struct Point2D {
 	
-	int xpos;
-	int ypos;
-} Point;
+	// row index 
+	int rowPos;
+	
+	// col index
+	int colPos;
+} Point2D;
 
 /*
 	Def : StackNode 구조체 정의
@@ -26,193 +23,215 @@ typedef struct Point2D {
 */
 typedef struct StackNode {
 	
-	// Data Field: Point2D
-	Point p;
+	// Data Field
+	Point2D item;
 	
 	// Link Field
-	struct Stack *link;
+	struct StackNode *link;
 } StackNode;
 
 /*
-	Def : StackType 구조체 정의
+	Def : LinkedStackType 구조체 정의
 	Note: 스택노드들이 쌓인 스택을 나타냄
 */
-typedef struct StackType {
+typedef struct LinkedStackType {
 	
-	// top 포인터는 마지막에 쌓인 스택노드를 가리킴 
+	// 최상단의 (가장 마지막에 쌓인) 스택노드를 가리키는 포인터 
 	StackNode *top;
-} StackType;
+} LinkedStackType;
 
 /*
 	function: 스택을 초기화 
 	Note	: 스택의 top 포인터가 NULL을 가리키게 함 
-	input	: StackType형 포인터 (call by reference) 
+	input	: LinkedStackType형 포인터 (call by reference) 
 	output	: (NULL)
 */
-void init(StackType *s) {
+void init(LinkedStackType *s) {
 	
-	s->top = NULL;
+	s -> top = NULL;
 }
 
 /*
 	fuction: 스택이 비어있는지 확인
-	Note   : 비어있으면 1을 반환
-	input  : StackType형 포인터 (call by reference) 
+	Note   : 비어있으면 1을 반환 
+	input  : LinkedStackType형 포인터 (call by reference) 
 	output : int 
 */
-int is_empty(StackType *s) {
+int is_empty(LinkedStackType *s) {
 	
-	return ( s->top == NULL );
+	return (s -> top == NULL);
 }
 
 /*
 	function: 스택의 push 함수 
-	Note    : 스택에 새로운 스택노드를 push함 
-	input   : s(StackType *) : 스택노드가 삽입될 스택 (call by reference)
-			  xpos(int) : 삽입될 스택노드의 내부변수 
-			  ypos(int) : 삽입될 스택노드의 내부변수
+	Note    : 스택에 새로운 스택노드를 push 및 콘솔출력(선택사항)
+	input   : s(LinkedStackType *) : 스택노드가 쌓일 스택 (call by reference)
+			  item(Point2D) : 삽입될 스택노드의 내부변수
+			  n(int) : push 과정의 콘솔출력여부 결정
 	output  : (NULL)
 */
-void push(StackType *s, int xpos, int ypos) {
+void push(LinkedStackType *s, Point2D item, int n) {
 	
-	// 새로운 스택노드 메모리 할당 
-	StackNode *new_node = (StackNode*)malloc(sizeof(StackNode));
+	// 새로운 스택노드 메모리 할당
+	StackNode *new_node = (StackNode *)malloc(sizeof(StackNode));
 	
-	if (new_node == NULL) {
+	if(new_node == NULL) {
 		
-		// 메모리 할당이 제대로 되었는지 확인 
-		fprintf(stderr, "error!");
+		// 메모리 할당에러 체크 
+		printf("메모리 할당에러\n");
 		return;
 	} else {
 		
 		// 새로운 스택노드 내부변수 입력 
-		new_node->p.xpos = xpos;
-		new_node->p.ypos = ypos;
-		new_node->link = s->top;
+		new_node -> item = item;
+		new_node -> link = s -> top;
 		
 		// 새로운 스택노드를 스택에 쌓음 
-		s->top = new_node;
+		s -> top = new_node;
+		
+		// n이 1이면 push 과정 콘솔출력 
+		if(n) {
+			printf("push (row:%2d, col:%2d)\n", item.rowPos, item.colPos);
+		}
 	}
 }
 
 /*
 	function: 스택의 pop 함수 
-	Note    : 스택에 마지막으로 쌓인 스택노드를 pop함
-	input   : StackType형 포인터 (call by reference) 
+	Note    : 스택 최상단의 스택노드를 pop 및 콘솔출력(선택사항) 
+	input   : s(LinkedStackType *) : 스택노드가 쌓인 스택 (call by reference)
+			  n(int) : pop 과정의 콘솔출력여부 결정 
 	output  : Point
 */
-Point pop(StackType * s) {
+Point2D pop(LinkedStackType *s, int n) {
 	
-	if ( !(is_empty(s)) ) {
+	if( is_empty(s) ) {
 		
-		// removed 포인터 스택의 최상단에 위치한 노드 가리킴 
-		StackNode *removed = s->top;
+		// 빈 스택은 pop할 수 없음 
+		printf("스택이 비어있음\n");
+		exit(1);
+	} else {
 		
-		// tmp(Point)에 대상노드의 내부변수 저장 
-		Point tmp;
-		tmp.xpos = removed->p.xpos;
-		tmp.ypos = removed->p.ypos;
+		// 스택 최상단의 노드가 pop의 대상 
+		StackNode *removed_node = s -> top;
+		
+		// 대상노드의 내부변수 item에 저장 
+		Point2D item = removed_node -> item;
 		
 		// 대상노드 스택에서 삭제 
-		s->top = s->top->link;
-		free(removed);
+		s -> top = s -> top -> link;
+		free(removed_node);
 		
-		// tmp(대상노드가 갖고있던 Point 값) 반환 
-		return tmp;
+		// n이 1이면 pop 과정 콘솔출력 
+		if(n) {
+			printf(" pop (row:%2d, col:%2d)\n", item.rowPos, item.colPos);
+		}
+		
+		// 대상노드가 갖고있던 내부변수 반환 
+		return item;
 	}
 }
 
 /*
-	function: 경로 탐색시 위치의 적절성 판단하는 함수
-	Note    : 
-	input   : maze(int[][10]) : 배열로 구성된 미로 
-			  xpos(int) : 미로에서의 x좌표 
-			  ypos(int) : 미로에서의 y좌표 
-	output  : int
+	function: 현재위치와 인접하고 이동가능한 위치를 스택에 push하는 함수 
+	Note    : 이동가능성은 해당 위치의 저장값(0인 경우에만 이동 가능)과 index 값의 유효성으로 판별 
+	input   : s(LinkedStackType *) : 이동가능위치 쌓아두는 스택 (call by reference)
+			  map(int[][10]) : 배열로 구성된 미로
+			  current(Point2D) : 현재위치 
+	output  : (NULL) 
 */
-int is_right(int maze[][10], int xpos, int ypos) {
+void stackWay(LinkedStackType *s, int map[][10], Point2D current) {
 	
-	if ( xpos < 0 || ypos < 0 || xpos > 9 || ypos > 9 ) {
+	// 현재위치의 row값, col값 
+	int row = current.rowPos;
+	int col = current.colPos;
+	
+	// 이동가능한 위치를 저장할 변수 
+	Point2D next;
+	
+	if( row + 1 < 10 && map[row + 1][col] == 0 ) {
 		
-		// 대상위치가 배열의 index를 넘어서면 0을 반환 
-		return 0;
+		// 아래쪽으로 이동가능하면 아래쪽의 좌표 push & 콘솔출력 
+		next.rowPos = row + 1;
+		next.colPos = col;
+		push(s, next, 1);
 	}
 	
-	if ( maze[xpos][ypos] == 0 || maze[xpos][ypos] == WAITING ) {
+	if( row - 1 > -1 && map[row - 1][col] == 0 ) {
 		
-		// 대상위치가 유효하면(0이거나 WAITING이면) 1을 반환 
-		return 1;
+		// 위쪽으로 이동가능하면 위쪽의 좌표 push & 콘솔출력 
+		next.rowPos = row - 1;
+		next.colPos = col;
+		push(s, next, 1);
 	}
 	
-	// 대상위치가 유효하지 않으면(1이거나 VISITED거나 BACKTRACKED이면) 0을 반환 
-	return 0;
+	if( col - 1 > -1 && map[row][col - 1] == 0 ) {
+		
+		// 왼쪽으로 이동가능하면 왼쪽의 좌표 push & 콘솔출력 
+		next.rowPos = row;
+		next.colPos = col - 1;
+		push(s, next, 1);
+	}
+	
+	if( col + 1 < 10 && map[row][col + 1] == 0 ) {
+		
+		// 오른쪽으로 이동가능하면 오른쪽의 좌표 push & 콘솔출력 
+		next.rowPos = row;
+		next.colPos = col + 1;
+		push(s, next, 1);
+	}
 }
 
 /*
-	function: 미로의 경로를 탐색 및 출력하는 함수 
-	Note    : 탐색 순서는 아래, 위, 왼쪽, 오른쪽임 
-	input   : maze(int[][10]) : 배열로 구성된 미로
-			  s(StackType *) : 위치정보(경로)가 쌓이는 스택 
+	function: 미로배열의 경로탐색과정과 탐색한 경로를 출력하는 함수 
+	Note    : 경로탐색 과정에서의 push/pop 과정을 콘솔에 출력함 로 
+	input   : s_temp(LinkedStackType) : push/pop이 반복되며 경로를 탐색하는 스택
+			  s_path(LinkedStackType *) : 지나온 위치가 순차적으로 저장되는 스택 (call by reference)
+			  map(int[][10]) : 배열로 구성된 미로 
+			  start(Point2D) : 경로탐색의 시작점
+			  finish(Point2D) : 경로탐색의 도착점 
 	output  : (NULL)
 */
-void find_path(int maze[][10], StackType * s) {
+void findPath(LinkedStackType s_temp, LinkedStackType *s_path, int map[][10], Point2D start, Point2D finish) {
 	
-	// 탐색 방향의 유효성을 나타내는 변수
-	// [0]: 하, [1]: 상, [2]: 좌, [3]: 우 
-	int switch_on[4] = { 0 };
+	// 현재위치를 시작점으로 지정 
+	Point2D current = start;
 	
-	// 현위치를 나타내는 Point 변수
-	// 시작점 (1, 0)으로 초기화 
-	Point p;
-	p.xpos = 1, p.ypos = 0;
-	
-	int x = 1, y = 0, state = 0;								// 변수 x, y는 위의 구조체 변수 p의 x좌표, y좌표를 의미하고 변수 state는 미로탐색 시 상,하,좌,우 각각이 도달가능한 곳인지를 나타내기 위한 변수
-	
-	StackType finalStack;
-	
-	init(&finalStack);						// finalStack은 이후 미로의 최종경로 출력에 이용될 스택
-	while (1) {
-		p = pop(s);												// 미로 탐색 시, 가능한 방향의 좌표를 push하기 전 현재 위치를 먼저 pop해주어야 함. 그 후 현 위치를 p에 저장
-		x = p.xpos;y = p.ypos;state = 0;						// p의 x,y 좌표를 변수 x,y에 저장. 매 이동마다 state는 0으로 초기화.
-		printf("pop : (%d,%d)\n", x, y);						// 현 위치 출력
-		push(&finalStack, x, y);								// pop한 좌표들을 finalStack에 push. 미로의 최종 경로 출력 시 방문한 곳, 즉 pop한 좌표들을 
-		int i;
-		for (i = 0;i < 4;i++) { switch_on[i] = 0; }			// 매 이동마다(반복마다) switch_on 배열의 각 요소는 0으로 초기화.
-		if (p.xpos == 8 && p.ypos == 9) break;					// 반복문의 종료 조건. (8,9)에 도달하였으면 탈출.
-		maze[x][y] = VISITED;									// pop한 현재 위치를 VISITED로 설정.
-
-		if (is_right(maze, x + 1, y)) { state++; switch_on[0] = 1; }		//아래
-		if (is_right(maze, x - 1, y)) { state++; switch_on[1] = 1; }		//위
-		if (is_right(maze, x, y - 1)) { state++; switch_on[2] = 1; }		//왼쪽
-		if (is_right(maze, x, y + 1)) { state++; switch_on[3] = 1; }		//오른쪽
-
-
-		if (state > 0) {
-			if (switch_on[0] == 1) { if (maze[x + 1][y] != WAITING) { push(s, x + 1, y);printf("push : (%d,%d)\n", x + 1, y); } maze[x + 1][y] = WAITING; }
-			if (switch_on[1] == 1) { if (maze[x - 1][y] != WAITING) { push(s, x - 1, y);printf("push : (%d,%d)\n", x - 1, y); } maze[x - 1][y] = WAITING; }
-			if (switch_on[2] == 1) { if(maze[x][y - 1] != WAITING){ push(s, x, y - 1);printf("push : (%d,%d)\n", x, y - 1); } maze[x][y - 1] = WAITING;	}
-			if (switch_on[3] == 1) { if (maze[x][y + 1] != WAITING) { push(s, x, y + 1);printf("push : (%d,%d)\n", x, y + 1); } maze[x][y + 1] = WAITING; }
-			/*각 경우 마다 WAITING 조건을 설정해준 이유는 경로 탐색 시
-			같은 좌표를 2번 push하는 것을 방지하기 위함입니다.*/
+	while(1) {
+		
+		// 현재위치가 도착점이면 탐색종료 
+		if(current.colPos == finish.colPos && current.rowPos == finish.rowPos) {
+			break;
 		}
-		else { maze[x][y] = BACKTRACKED; }			// 어느 방향으로도 탐색 불가능하면 다시 되돌아가야 하므로 현 위치를 BACKTRACKED로 설정
+		
+		// 경로저장스택(s_path)에 현재위치를 저장 및 현재위치를 VISITED로 표시 
+		push(s_path, current, 0);
+		map[current.rowPos][current.colPos] = VISITED;
+		
+		// 현재위치에서 이동가능한 위치를 경로탐색스택(s_temp)에 저장 
+		stackWay(&s_temp, map, current);
+		
+		// 경로탐색스택에 마지막으로 저장된 위치를 pop하여 현재위치에 저장 
+		current = pop(&s_temp, 1);
 	}
+}
 
-	StackType copy;init(&copy);						// copy는 finalStack에 쌓인 좌표들을 역순으로 저장할 스택.
-	StackNode * tmp = (&finalStack)->top;			
-	while (tmp != NULL) {
-		push(&copy, tmp->p.xpos, tmp->p.ypos);		// finalStack의 꼭대기부터 차례로 copy에 push
-		tmp = tmp->link;
+/*
+	function: 스택의 요소를 역순으로(먼저 쌓인것을 우선으로) 콘솔에 출력하는 함수 
+	Note    : 스택은 LIFO이므로, 재귀적으로 구성하여 먼저 쌓인 요소가 먼저 출력되도록 함
+	input   : LinkedStackType형 포인터 (call by reference)
+	output  : (NULL)
+*/
+void printPath(LinkedStackType *s) {
+	
+	Point2D data;
+	if( is_empty(s) ) {
+		return;
+	} else {
+		data = pop(s, 0);
+		printPath(s);
+		printf("(row:%2d, col:%2d) -> ", data.rowPos, data.colPos);
 	}
-
-	tmp = (&copy)->top;								// 노드 포인터 tmp를 copy의 꼭대기 노드, 맨 앞을 가리키도록 설정. 이 때 tmp가 가리키는 노드는 (1,0)이 될 것임
-	while (tmp->link != NULL) {						// 마지막 노드에 도달할 때까지 반복. 마지막 노드에 도달 시 종료
-		printf("(%d, %d) -> ", tmp->p.xpos, tmp->p.ypos);
-		tmp = tmp->link;
-	}
-
-	printf("(%d, %d)\n", tmp->p.xpos, tmp->p.ypos);		// 마지막 좌표 (8,9) 출력
-
 }
 
 /*
@@ -223,29 +242,37 @@ void find_path(int maze[][10], StackType * s) {
 */
 int main() {
 	
-	// 미로 데이터 입력 
+	// 미로 데이터 입력
 	int maze[10][10] = {
-		{ 1,1,1,1,1,1,1,1,1,1 },
-		{ 0,0,0,0,1,0,0,0,0,1 },
-		{ 1,0,0,0,1,0,0,0,0,1 },
-		{ 1,0,1,1,1,0,0,1,0,1 },
-		{ 1,0,0,0,1,0,0,1,0,1 },
-		{ 1,0,1,0,1,0,0,1,0,1 },
-		{ 1,0,1,0,1,0,0,1,0,1 },
-		{ 1,0,1,0,1,0,0,1,0,1 },
-		{ 1,0,1,0,0,0,0,1,0,0 },
-		{ 1,1,1,1,1,1,1,1,1,1 }
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+		{1, 0, 1, 1, 1, 0, 0, 1, 0, 1},
+		{1, 0, 0, 0, 1, 0, 0, 1, 0, 1},
+		{1, 0, 1, 0, 1, 0, 0, 1, 0, 1},
+		{1, 0, 1, 0, 1, 0, 0, 1, 0, 1},
+		{1, 0, 1, 0, 1, 0, 0, 1, 0, 1},
+		{1, 0, 1, 0, 0, 0, 0, 1, 0, 0},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	};
 	
-	// 미로의 경로 탐색을 위한 스택 선언 
-	StackType s;
+	// 시작점과 끝점 지정 
+	Point2D start = {1, 0};
+	Point2D finish = {8, 9};
 	
-	// 스택 초기화 
-	init(&s);
+	// 스택 선언 및 초기화
+	// temp는 push/pop이 반복되며 경로탐색에 사용됨
+	// path는 지나온 경로를 저장하는데에 사용됨 
+	LinkedStackType temp;
+	LinkedStackType path;
+	init(&temp);
+	init(&path);
 	
-	// 시작점 (1, 0) push 후,
-	push(&s, 1, 0);
+	// 경로 탐색 
+	findPath(temp, &path, maze, start, finish);
 	
-	// 경로 탐색 및 출력 
-	find_path(maze, &s);
+	// 경로 출력 
+	printf("\nResult Path:\n");
+	printPath(&path);
+	printf("finish");
 }
