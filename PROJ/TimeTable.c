@@ -39,8 +39,8 @@ void display_TTL(TimeTableNode *phead) {
 	for(p = phead->rlink; p != phead; p = p->rlink) {
 		printf("-----\n");
 		//printf("%x\n", p->llink);
-		printf("%f ~ %f\n", p->sTime, p->eTime);
-		printf("%d\n", p->Pos);
+		printf("Time  : %2.2f ~ %2.2f\n", p->sTime, p->eTime);
+		printf("Pos ID: %d\n", p->Pos);
 		//printf("%x\n", p->rlink);
 		printf("-----\n");
 	}
@@ -91,10 +91,12 @@ int main() {
 	TimeTableNode mylist;
 	initialize_TTL(&mylist);
 	
-	Space tempSpace = {1};
-	insert_TTN(&mylist, create_TTN(12.0, 13.0, tempSpace));
-	insert_TTN(&mylist, create_TTN(14.0, 15.0, tempSpace));
-	insert_TTN(&mylist, create_TTN(15.0, 17.0, tempSpace));
+	Space tempSpace1 = {1};
+	Space tempSpace2 = {2};
+	Space tempSpace3 = {3};
+	insert_TTN(&mylist, create_TTN(12.0, 13.8, tempSpace1));
+	insert_TTN(&mylist, create_TTN(14.0, 15.0, tempSpace2));
+	insert_TTN(&mylist, create_TTN(15.1, 17.9, tempSpace3));
 	
 	display_TTL(&mylist);
 	
