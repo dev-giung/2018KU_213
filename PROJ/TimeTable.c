@@ -46,12 +46,23 @@ void display_TTL(TimeTableNode *phead) {
 	}
 }
 
-void insert_TTN(TimeTableNode *pre_node, TimeTableNode *new_node) {
+void insert_TTN(TimeTableNode *phead, TimeTableNode *new_node) {
 	
-	new_node->llink = pre_node;
-	new_node->rlink = pre_node->rlink;
-	pre_node->rlink->llink = new_node;
-	pre_node->rlink = new_node;
+	TimeTableNode *pre_node = phead;
+	
+	while(pre_node->rlink != phead) {
+		pre_node = pre_node->rlink;
+	}
+	
+	if(pre_node->eTime > new_node->sTime) {
+		//printf("ÀÏÁ¤Àº °ãÄ¥ ¼ö ¾øÀ½.\n");
+		return;
+	} else {
+		new_node->llink = pre_node;
+		new_node->rlink = pre_node->rlink;
+		pre_node->rlink->llink = new_node;
+		pre_node->rlink = new_node;	
+	}
 }
 
 void remove_TTN(TimeTableNode *head, TimeTableNode *removed) {
@@ -83,7 +94,7 @@ int main() {
 	Space tempSpace = {1};
 	insert_TTN(&mylist, create_TTN(12.0, 13.0, tempSpace));
 	insert_TTN(&mylist, create_TTN(14.0, 15.0, tempSpace));
-	insert_TTN(&mylist, create_TTN(16.0, 17.0, tempSpace));
+	insert_TTN(&mylist, create_TTN(15.0, 17.0, tempSpace));
 	
 	display_TTL(&mylist);
 	
