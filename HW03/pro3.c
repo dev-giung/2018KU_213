@@ -3,8 +3,16 @@
 #define MAX_VERTICES 9
 #define INF 10000
 
-void dijkstra(int graph[][MAX_VERTICES]) {
+void dijkstra(int graph[][MAX_VERTICES], int v) {
 	
+	// Define start & end vertex index variables
+	int sVertex = 0;
+	int eVertex = v;
+	
+	/*
+		Get distance of 0 to v
+		(by Dijkstra algorithm)
+	*/
 }
 
 void floyd(int graph[][MAX_VERTICES]) {
@@ -12,7 +20,7 @@ void floyd(int graph[][MAX_VERTICES]) {
 	// Define a distance matrix
 	int dMatrix[MAX_VERTICES][MAX_VERTICES];
 	
-	// Define an index variables
+	// Define index variables
 	int i, j, k;
 	
 	// Initialize the distance matrix
@@ -61,4 +69,6 @@ int main() {
 	
 	printf("Floyd:\n");
 	floyd(myGraph);
+	
+	return 0;
 }
