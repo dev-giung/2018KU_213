@@ -3,7 +3,7 @@
 #define MAX_VERTICES 9
 #define INF 10000
 
-void dijkstra(int map[][MAX_VERTICES]) {
+void dijkstra(int graph[][MAX_VERTICES]) {
 	
 }
 
