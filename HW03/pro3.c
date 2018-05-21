@@ -3,16 +3,51 @@
 #define MAX_VERTICES 9
 #define INF 10000
 
-void dijkstra(int graph[][MAX_VERTICES], int v) {
+void dijkstra(int graph[][MAX_VERTICES], int start, int end) {
 	
-	// Define start & end vertex index variables
-	int sVertex = 0;
-	int eVertex = v;
+	int sVertex = start;
+	int eVertex = end;
 	
-	/*
-		Get distance of 0 to v
-		(by Dijkstra algorithm)
-	*/
+	int distance[MAX_VERTICES];
+	int found[MAX_VERTICES];
+	
+	int i, u, w;
+	
+	for( i = 0; i < MAX_VERTICES; i++ ) {
+		distance[i] = graph[sVertex][i];
+		found[i] = 0;
+	}
+	distance[sVertex] = 0;
+	found[sVertex] = 1;
+	
+	for( i = 0; i < MAX_VERTICES - 2; i++ ) {
+		u = choose(distance, found);
+		found[u] = 1;
+		for( w = 0; w < MAX_VERTICES; w++ ) {
+			if( found[w] == 0 ) {
+				if( distance[u] + graph[u][w] < distance[w] ) {
+					distance[w] = distance[u] + graph[u][w];
+				}
+			}
+		}
+	}
+	
+	printf("%d\n", distance[eVertex]);
+}
+
+int choose(int distance[], int found[]) {
+	int i, min, minpos;
+	min = INF;
+	minpos = -1;
+	
+	for( i = 0; i < MAX_VERTICES; i++ ) {
+		if( distance[i] < min && found[i] == 0) {
+			min = distance[i];
+			minpos = i;
+		}
+	}
+	
+	return minpos;
 }
 
 void floyd(int graph[][MAX_VERTICES]) {
@@ -30,7 +65,7 @@ void floyd(int graph[][MAX_VERTICES]) {
 		}
 	}
 	
-	// Get distance matrix (by Floyd algorithm)
+	// Generate distance matrix (by Floyd algorithm)
 	for( k = 0; k < MAX_VERTICES; k++ ) {
 		for( i = 0; i < MAX_VERTICES; i++ ) {
 			for( j = 0; j < MAX_VERTICES; j++ ) {
@@ -69,6 +104,13 @@ int main() {
 	
 	printf("Floyd:\n");
 	floyd(myGraph);
+	
+	printf("Dijkstra:\n");
+	
+	int i;
+	for( i = 0; i < MAX_VERTICES; i++ ) {
+		dijkstra(myGraph, 0, i);
+	}
 	
 	return 0;
 }
