@@ -1,29 +1,50 @@
 #include <stdio.h>
 #include <malloc.h>
 
+#define DAYS_FOR_WEEK 5
+
 typedef double Time;
 
 typedef struct Space {
 	
-	int ID; // 장소고유번호
+	// Building ID & Name
+	int id;
+	char * name;
+
+	// Facility Info
+	int is_cafe;
+	int is_lounge;
+	int is_convenience;
+	int is_vendingMac;
+	int is_copyMac;
+	int is_anyOther;
 	 
 } Space;
 
 typedef struct TimeTableNode {
 
 	// Data Field
-    Time sTime; // 일정시작시간
-    Time eTime; // 일정종료시간
-    Space  Pos; // 일정진행장소
+    Time sTime;
+    Time eTime;
+    Space  pos;
 	
 	// Link Field
-    struct TimeTableNode *llink; // 이전일정
-    struct TimeTableNode *rlink; // 다음일정
+    struct TimeTableNode *llink;
+    struct TimeTableNode *rlink;
 
 } TimeTableNode;
 
+typedef struct TimeTableType {
+	
+	// Pointer Array
+	TimeTableNode * day_list[DAYS_FOR_WEEK];
+	
+} TimeTableType;
+
 /*
-	Functions for 
+	Functions for the Time Table
+	- functions for the basic linked list (initialize, insert/remove node, etc.)
+	- functions for the time table (save/load data, print table, etc.)
 */
 
 void initialize_TTL(TimeTableNode *phead) {
