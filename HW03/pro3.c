@@ -4,48 +4,6 @@
 #define INF 10000
 
 /*
-	function: 그래프의 모든 노드 간의 최단거리행렬을 출력 (by Floyd Algorithm) 
-	input	: graph(int[][MAX_VERTICES]) : 그래프 인접행렬 (call by reference)
-	output	: (NULL)
-*/
-void floyd(int graph[][MAX_VERTICES]) {
-	
-	// define a distance matrix
-	int dMatrix[MAX_VERTICES][MAX_VERTICES];
-	
-	// define index variables
-	int i, j, k;
-	
-	// initialize the distance matrix
-	for( i = 0; i < MAX_VERTICES; i++ ) {
-		for( j = 0; j < MAX_VERTICES; j++ ) {
-			dMatrix[i][j] = graph[i][j];
-		}
-	}
-	
-	// generate distance matrix (by Floyd algorithm)
-	for( k = 0; k < MAX_VERTICES; k++ ) {
-		for( i = 0; i < MAX_VERTICES; i++ ) {
-			for( j = 0; j < MAX_VERTICES; j++ ) {
-				if( dMatrix[i][j] > dMatrix[i][k] + dMatrix[k][j] ) {
-					dMatrix[i][j] = dMatrix[i][k] + dMatrix[k][j];
-				}
-			}
-		}
-	}
-	
-	// print the distance matrix
-	printf("    [S] [A] [B] [C] [D] [E] [F] [G] [H]\n");
-	for( i = 0; i < MAX_VERTICES; i++ ) {
-		printf("[%c] ", i == 0 ? 83 : i + 64);
-		for( j = 0; j < MAX_VERTICES; j++ ) {
-			printf("%3d ", dMatrix[i][j]);
-		}
-		printf("\n");
-	}
-}
-
-/*
 	function: 그래프의 시작정점으로부터 도착정점까지의 최단거리를 출력 (by Dijkstra algorithm) 
 	input	: graph(int[][MAX_VERTICES]) : 그래프 인접행렬 (call by reference)
 			  start(int) : 시작정점의 인덱스 값
@@ -108,6 +66,7 @@ void dijkstra(int graph[][MAX_VERTICES], int start, int end) {
 	input	: distance(int[]) : 시작정점으로부터의 최단경로를 담는 배열 
 			  found(int[]) : 방문한 정점을 표시하는 배열
 	output	: (int)
+	Note    : dijkstra 함수를 위한 보조함수. 
 */
 int choose(int distance[], int found[]) {
 	
@@ -131,6 +90,54 @@ int choose(int distance[], int found[]) {
 	return minpos;
 }
 
+/*
+	function: 그래프의 모든 노드 간의 최단거리행렬을 출력 (by Floyd Algorithm) 
+	input	: graph(int[][MAX_VERTICES]) : 그래프 인접행렬 (call by reference)
+	output	: (NULL)
+*/
+void floyd(int graph[][MAX_VERTICES]) {
+	
+	// define a distance matrix
+	int dMatrix[MAX_VERTICES][MAX_VERTICES];
+	
+	// define index variables
+	int i, j, k;
+	
+	// initialize the distance matrix
+	for( i = 0; i < MAX_VERTICES; i++ ) {
+		for( j = 0; j < MAX_VERTICES; j++ ) {
+			dMatrix[i][j] = graph[i][j];
+		}
+	}
+	
+	// generate distance matrix (by Floyd algorithm)
+	for( k = 0; k < MAX_VERTICES; k++ ) {
+		for( i = 0; i < MAX_VERTICES; i++ ) {
+			for( j = 0; j < MAX_VERTICES; j++ ) {
+				if( dMatrix[i][j] > dMatrix[i][k] + dMatrix[k][j] ) {
+					dMatrix[i][j] = dMatrix[i][k] + dMatrix[k][j];
+				}
+			}
+		}
+	}
+	
+	// print the distance matrix
+	printf("    [S] [A] [B] [C] [D] [E] [F] [G] [H]\n");
+	for( i = 0; i < MAX_VERTICES; i++ ) {
+		printf("[%c] ", i == 0 ? 83 : i + 64);
+		for( j = 0; j < MAX_VERTICES; j++ ) {
+			printf("%3d ", dMatrix[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+/*
+	function: 메인함수
+	input   : (NULL)
+	output  : (NULL)
+	Note    : 입력함수에 예외처리가 다소 미흡할 수 있으나 고려하지 않음.
+*/
 int main() {
 
 	// adjacency matrix of the graph
