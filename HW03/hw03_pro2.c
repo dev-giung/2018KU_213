@@ -160,7 +160,7 @@ int main() {
 	char name[100];						// 파일의 학생 이름을 저장하는데 사용될 변수
 
 	int arr[100];int check[100];		// binary_sorting 함수에 이용될 두 개의 배열
-	for (int i = 0;i < 100;i++) {		// arr엔 오름차순의 성적 값을, check는 0으로 초기화
+	for (i = 0;i < 100;i++) {		// arr엔 오름차순의 성적 값을, check는 0으로 초기화
 		arr[i] = i;
 		check[i] = 0;
 	}
@@ -183,7 +183,7 @@ int main() {
 		i++;
 	}
 	// 학생 정보를 읽을 때마다, treeNode 구조체 배열인 treeArr의 첫번째 index부터 차례대로 저장
-	for (int i = 0;i < 100;i++) {
+	for (i = 0;i < 100;i++) {
 		int k = arr[i];
 		insert_node_grade(&root, treeArr[k].studentID, treeArr[k].name, treeArr[k].grade);
 	}
