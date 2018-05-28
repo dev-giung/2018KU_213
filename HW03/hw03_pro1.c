@@ -429,38 +429,45 @@ int deQueue(LQueueType *LQ) {
 }
 
 //정렬된 배열을 출력하는 함수
-void printSortResult(student b[], int i)
+void printSortResult(student b[], int caseNum)
 {
-	int j;
-	
+	int i;
 	student *a = copy(b);
-	switch (i) {
-	case 0: selectionSort(a, SIZE);
-		printf("Selection Sort\n");
-		break;
-	case 1: insertionSort(a, SIZE);
-		printf("Insertion Sort\n");
-		break;
-	case 2: bubbleSort(a, SIZE);
-		printf("Bubble Sort\n");
-		break;
-	case 3: shellSort(a, SIZE);
-		printf("Shell Sort\n");
-		break;
-	case 4: mergeSort(a, 0, SIZE-1);
-		printf("Merge Sort\n");
-		break;
-	case 5: quickSort(a, 0, SIZE-1);
-		printf("Quick Sort\n");
-		break;
-	case 6: radixSort(a, SIZE);
-		printf("Radix Sort\n");
-		break;
+	
+	switch (caseNum) {
+		case 0:
+			selectionSort(a, SIZE);
+			printf("Selection Sort\n");
+			break;
+		case 1:
+			insertionSort(a, SIZE);
+			printf("Insertion Sort\n");
+			break;
+		case 2:
+			bubbleSort(a, SIZE);
+			printf("Bubble Sort\n");
+			break;
+		case 3:
+			shellSort(a, SIZE);
+			printf("Shell Sort\n");
+			break;
+		case 4:
+			mergeSort(a, 0, SIZE-1);
+			printf("Merge Sort\n");
+			break;
+		case 5:
+			quickSort(a, 0, SIZE-1);
+			printf("Quick Sort\n");
+			break;
+		case 6:
+			radixSort(a, SIZE);
+			printf("Radix Sort\n");
+			break;
 	}		
 	
-	for (j = 0; j < SIZE; j++)
+	for (i = 0; i < SIZE; i++)
 	{
-		printf("%d ", a[j].score);
+		printf("%d ", a[i].score);
 	}
 	printf("\n\n");
 }
