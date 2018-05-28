@@ -347,9 +347,8 @@ double radixSort(student b[], int size)
 	return time;
 }
 //quick sort에 쓰이는 함수
-int partition(student b[], int begin, int last)
+int partition(student a[], int begin, int last)
 {
-	student *a = copy(b);
 	int pivot, L, R, t;
 	int temp;
 	L = begin;
@@ -377,9 +376,8 @@ int partition(student b[], int begin, int last)
 	return R;
 }
 //shell sort에 사용되는 함수
-void intervalSort(student b[], int begin, int last, int interval)
+void intervalSort(student a[], int begin, int last, int interval)
 {
-	student *a = copy(b);
 	int i, j;
 	int item;
 	for (i = begin + interval; i <= last; i = i + interval)
@@ -391,9 +389,8 @@ void intervalSort(student b[], int begin, int last, int interval)
 	}
 }
 //merge sort에 사용되는 함수
-void merge(student b[], int m, int middle, int n)
+void merge(student a[], int m, int middle, int n)
 {
-	student *a = copy(b);
 	int sorted[SIZE];
 	int i, j, k, t;
 	i = m;
