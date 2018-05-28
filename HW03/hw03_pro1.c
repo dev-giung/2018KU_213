@@ -42,10 +42,10 @@ void printSortResult(student b[], int i);
 
 int main()
 {
+	FILE *fp = NULL;
 	student students[SIZE];
 	double sum[7] = { 0, };
-	
-	FILE *fp = NULL;
+	double temp = 0.0;
 
 	if ((fp = fopen("Student_info.txt", "r")) == NULL)
 	{
@@ -56,7 +56,7 @@ int main()
 	srand((int)time(NULL));
 	int i, j;
 	
-	for (j = 0;j < 100;j++)
+	for (j = 0; j < 100;j++)
 	{
 		for (i = 0; i < 100; i++)
 		{
@@ -64,21 +64,34 @@ int main()
 			students[i].score = rand() % 101;			
 		}
 		printf("%d번째\n", j + 1);
-		printf("Selection sort: %lf(ms)\t", selectionSort(students, SIZE));
-		printf("Insertion sort: %lf(ms)\t", insertionSort(students, SIZE));
-		printf("Bubble sort: %lf(ms)\t", bubbleSort(students, SIZE));
-		printf("Shell sort: %lf(ms)\t", shellSort(students, SIZE));
-		printf("Merge sort: %lf(ms)\t", mergeSort(students, 0, SIZE - 1));
-		printf("Quick sort: %lf(ms)\t", quickSort(students, 0, SIZE - 1));
-		printf("Radix sort: %lf(ms)\t\n", radixSort(students, SIZE));
 		
-		sum[0] += selectionSort(students, SIZE);
-		sum[1] += insertionSort(students, SIZE);
-		sum[2] += bubbleSort(students, SIZE);
-		sum[3] += shellSort(students, SIZE);
-		sum[4] += mergeSort(students, 0, SIZE-1);
-		sum[5] += quickSort(students, 0, SIZE-1);
-		sum[6] += radixSort(students, SIZE);
+		temp = selectionSort(students, SIZE);
+		sum[0] += temp;
+		printf("Selection sort: %lf(ms)\t", temp);
+		
+		temp = insertionSort(students, SIZE);
+		sum[1] += temp;
+		printf("Insertion sort: %lf(ms)\t", temp);
+		
+		temp = bubbleSort(students, SIZE);
+		sum[2] += temp;
+		printf("Bubble sort: %lf(ms)\t", temp);
+		
+		temp = shellSort(students, SIZE);
+		sum[3] += temp;
+		printf("Shell sort: %lf(ms)\t", temp);
+		
+		temp = mergeSort(students, 0, SIZE - 1);
+		sum[4] += temp;
+		printf("Merge sort: %lf(ms)\t", temp);
+		
+		temp = quickSort(students, 0, SIZE - 1);
+		sum[5] += temp;
+		printf("Quick sort: %lf(ms)\t", temp);
+		
+		temp = radixSort(students, SIZE);
+		sum[6] += temp;
+		printf("Radix sort: %lf(ms)\t\n", temp);
 	}
 	
 	printf("\n\n정렬 전:\n");
