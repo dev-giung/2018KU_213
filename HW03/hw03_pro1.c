@@ -46,6 +46,7 @@ int main()
 	student students[SIZE];
 	double sum[7] = { 0, };
 	double temp = 0.0;
+	int i, j; // index variables
 
 	if ((fp = fopen("Student_info.txt", "r")) == NULL)
 	{
@@ -54,11 +55,10 @@ int main()
 	}
 	
 	srand((int)time(NULL));
-	int i, j;
 	
-	for (j = 0; j < 100;j++)
+	for (j = 0; j < 100; j++)
 	{
-		for (i = 0; i < 100; i++)
+		for (i = 0; i < SIZE; i++)
 		{
 			fscanf(fp, "%d %[^\n]s", &students[i].student_number, students[i].name);
 			students[i].score = rand() % 101;			
@@ -217,7 +217,6 @@ double bubbleSort(student b[], int size)
 			}
 		}
 	}
-
 	
 	QueryPerformanceCounter(&end);
 	
@@ -262,8 +261,8 @@ double mergeSort(student b[], int m, int n)
 	if (m < n)
 	{
 		middle = (m + n) / 2;
-		mergeSort(a, m, middle);
-		mergeSort(a, middle + 1, n);
+		mergeSort2(a, m, middle);
+		mergeSort2(a, middle + 1, n);
 		merge(a, m, middle, n);
 	}
 
@@ -271,6 +270,19 @@ double mergeSort(student b[], int m, int n)
 	time = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart * 1000;
 	
 	return time;
+}
+
+void mergeSort2(student a[], int m, int n)
+{
+	int middle;
+	
+	if (m < n)
+	{
+		middle = (m + n) / 2;
+		mergeSort2(a, m, middle);
+		mergeSort2(a, middle + 1, n);
+		merge(a, m, middle, n);
+	}
 }
 
 double quickSort(student b[], int begin, int last)
@@ -287,13 +299,25 @@ double quickSort(student b[], int begin, int last)
 	if (begin < last)
 	{
 		p = partition(a, begin, last);
-		quickSort(a, begin, p - 1);
-		quickSort(a, p + 1, last);
+		quickSort2(a, begin, p - 1);
+		quickSort2(a, p + 1, last);
 	}
 	QueryPerformanceCounter(&end);
 	time = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart * 1000;	
 	
 	return time;
+}
+
+void quickSort2(student a[], int begin, int last)
+{
+	int p;
+	
+	if (begin < last)
+	{
+		p = partition(a, begin, last);
+		quickSort2(a, begin, p - 1);
+		quickSort2(a, p + 1, last);
+	}	
 }
 
 double radixSort(student b[], int size)

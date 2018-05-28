@@ -159,7 +159,7 @@ int main() {
 
 	treeNode * root = NULL;
 	
-	int i = 0, j = 99;
+	int i = 0;
 	
 	// 파일의 학번 & 학생이름을 저장하는데 사용될 변수
 	int student_number;
