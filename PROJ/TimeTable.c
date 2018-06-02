@@ -2,7 +2,9 @@
 #include <malloc.h>
 
 #define DAYS_FOR_WEEK 5
-
+#define TRUE 1
+#define FALSE 0
+ 
 typedef double Time;
 
 typedef struct Space {
@@ -36,10 +38,15 @@ typedef struct TimeTableNode {
 
 typedef struct TimeTableType {
 	
-	// Pointer Array
-	TimeTableNode * day_list[DAYS_FOR_WEEK];
+	// List Array
+	TimeTableNode day_list[DAYS_FOR_WEEK];
 	
 } TimeTableType;
+
+void display_Space(Space mySpace) {
+	
+	printf("%d, %s, %d\n", mySpace.id, mySpace.name, mySpace.is_cafe);
+}
 
 /*
 	Functions for the Time Table
@@ -51,19 +58,19 @@ void initialize_TTL(TimeTableNode *phead) {
 	
 	phead->llink = phead;
 	phead->rlink = phead;
-	
 }
 
 void display_TTL(TimeTableNode *phead) {
 	
 	TimeTableNode *p;
 	for(p = phead->rlink; p != phead; p = p->rlink) {
-		printf("-----\n");
+		printf("--------------------\n");
 		//printf("%x\n", p->llink);
-		printf("Time  : %2.2f ~ %2.2f\n", p->sTime, p->eTime);
-		printf("Pos ID: %d\n", p->Pos);
+		printf("Time : %2.2f ~ %2.2f\n", p->sTime, p->eTime);
+		display_Space(p->pos);
+		//printf("Pos ID: %d\n", p->Pos);
 		//printf("%x\n", p->rlink);
-		printf("-----\n");
+		printf("--------------------\n");
 	}
 }
 
@@ -94,14 +101,14 @@ void remove_TTN(TimeTableNode *head, TimeTableNode *removed) {
 	free(removed);
 }
 
-TimeTableNode *create_TTN(Time sTime, Time eTime, Space Pos) {
+TimeTableNode *create_TTN(Time sTime, Time eTime, Space pos) {
 	
 	TimeTableNode *new_node = NULL;
 	new_node = (TimeTableNode *)malloc(sizeof(TimeTableNode));
 	
 	new_node->sTime = sTime;
 	new_node->eTime = eTime;
-	new_node->Pos = Pos;
+	new_node->pos = pos;
 	
 	new_node->llink = NULL;
 	new_node->rlink = NULL;
@@ -109,17 +116,22 @@ TimeTableNode *create_TTN(Time sTime, Time eTime, Space Pos) {
 
 int main() {
 	
-	TimeTableNode mylist;
-	initialize_TTL(&mylist);
+	TimeTableType myTimeTable;
+	int i = 0;
 	
-	Space tempSpace1 = {1};
-	Space tempSpace2 = {2};
-	Space tempSpace3 = {3};
-	insert_TTN(&mylist, create_TTN(12.0, 13.8, tempSpace1));
-	insert_TTN(&mylist, create_TTN(14.0, 15.0, tempSpace2));
-	insert_TTN(&mylist, create_TTN(15.1, 17.9, tempSpace3));
+	for( i = 0; i < DAYS_FOR_WEEK; i++ ) {
+		initialize_TTL(&myTimeTable.day_list[i]);
+	}
 	
-	display_TTL(&mylist);
+	Space tempSpace1 = {1, "건물이름_1", TRUE, TRUE, FALSE, FALSE, FALSE, FALSE};
+	Space tempSpace2 = {2, "건물이름_2", TRUE, TRUE, FALSE, FALSE, FALSE, FALSE};
+	Space tempSpace3 = {3, "건물이름_3", TRUE, TRUE, FALSE, FALSE, FALSE, FALSE};
+	
+	insert_TTN(&myTimeTable.day_list[0], create_TTN(12.0, 13.8, tempSpace1));
+	insert_TTN(&myTimeTable.day_list[0], create_TTN(14.0, 15.0, tempSpace2));
+	insert_TTN(&myTimeTable.day_list[0], create_TTN(15.1, 17.9, tempSpace3));
+	
+	display_TTL(&myTimeTable.day_list[0]);
 	
 	return 0;
 }
