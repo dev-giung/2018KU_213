@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <malloc.h>
 
-#define SPACE_NUMBER 16
+#define SPACE_NUMBER 18
 /*
 	Structures
 */
