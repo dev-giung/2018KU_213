@@ -1,12 +1,16 @@
 /*
-	FileHandler.c contains functions for file saving & loading.
+	SpaceFileHandler.c contains functions for file loading.
 	- Space_info.txt
 */
 
 #include <stdio.h>
 #include <malloc.h>
 
+/*
+	Constants
+*/
 #define SPACE_NUMBER 18
+
 /*
 	Structures
 */
@@ -41,8 +45,8 @@ void loadTXT_SpaceInfo(Space * mySpaceArray, int N) {
 	
 	if( (mySpaceFile = fopen(SpaceFileName, "r")) == NULL ) {
 		
-		printf("Error : Cannot find the file");
-		return 0;
+		printf("Error : Cannot find the file <%s>", SpaceFileName);
+		return;
 	}
 	
 	for( index = 0; index < N; index++ ) {
@@ -55,6 +59,9 @@ void loadTXT_SpaceInfo(Space * mySpaceArray, int N) {
 	}
 }
 
+/*
+	Temporary Functions
+*/
 void print_SpaceInfo(Space * mySpaceArray, int N) {
 	
 	int index = 0;
@@ -69,10 +76,12 @@ void print_SpaceInfo(Space * mySpaceArray, int N) {
 	}
 }
 
+/*
+	Main Function
+*/
 int main() {
 	
 	loadTXT_SpaceInfo(SpaceInfo, SPACE_NUMBER);
-	
 	print_SpaceInfo(SpaceInfo, SPACE_NUMBER);
 	
 	return 0;

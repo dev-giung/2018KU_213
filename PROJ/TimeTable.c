@@ -28,7 +28,7 @@ typedef struct TimeTableNode {
 	// Data Field
     Time sTime;
     Time eTime;
-    Space  pos;
+    int indexPos;
 	
 	// Link Field
     struct TimeTableNode *llink;
