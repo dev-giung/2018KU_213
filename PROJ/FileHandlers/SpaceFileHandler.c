@@ -38,7 +38,7 @@ Space SpaceInfo[SPACE_NUMBER];
 /*
 	File Handler Functions
 */
-void loadTXT_SpaceInfo(Space * mySpaceArray, int N) {
+void loadTXT_SpaceInfo(Space * mySpaceArray) {
 	
 	FILE * mySpaceFile = NULL;
 	int index = 0;
@@ -49,7 +49,7 @@ void loadTXT_SpaceInfo(Space * mySpaceArray, int N) {
 		return;
 	}
 	
-	for( index = 0; index < N; index++ ) {
+	for( index = 0; index < SPACE_NUMBER; index++ ) {
 		
 		fscanf( mySpaceFile, "%d\t%s\t%d\t%d\t%d\t%d\t%d", 
 			&mySpaceArray[index].id, &mySpaceArray[index].name, &mySpaceArray[index].is_cafe, 
@@ -62,11 +62,11 @@ void loadTXT_SpaceInfo(Space * mySpaceArray, int N) {
 /*
 	Temporary Functions
 */
-void print_SpaceInfo(Space * mySpaceArray, int N) {
+void print_SpaceInfo(Space * mySpaceArray) {
 	
 	int index = 0;
 	
-	for( index = 0; index < N; index++ ) {
+	for( index = 0; index < SPACE_NUMBER; index++ ) {
 		
 		printf("%d\t%s\t%d\t%d\t%d\t%d\t%d\n", 
 			mySpaceArray[index].id, &mySpaceArray[index].name, mySpaceArray[index].is_cafe, 
@@ -81,8 +81,8 @@ void print_SpaceInfo(Space * mySpaceArray, int N) {
 */
 int main() {
 	
-	loadTXT_SpaceInfo(SpaceInfo, SPACE_NUMBER);
-	print_SpaceInfo(SpaceInfo, SPACE_NUMBER);
+	loadTXT_SpaceInfo(SpaceInfo);
+	print_SpaceInfo(SpaceInfo);
 	
 	return 0;
 }
