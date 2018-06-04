@@ -25,8 +25,8 @@ typedef struct Space {
 typedef struct GraphNode {
 	
 	// Data Field
+	// this index value will load space data from SpaceInfoArray[index].
 	int index;
-	Space pos;
 
 	// Link Field
 	struct GraphNode * link;
