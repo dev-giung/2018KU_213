@@ -57,6 +57,8 @@ void loadTXT_SpaceInfo(Space * mySpaceArray) {
 			&mySpaceArray[index].is_vendingMac, &mySpaceArray[index].is_copyMac
 		);
 	}
+	
+	fclose( mySpaceFile );
 }
 
 /*
