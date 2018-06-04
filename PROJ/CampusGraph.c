@@ -18,7 +18,6 @@ typedef struct Space {
 	int is_convenience;
 	int is_vendingMac;
 	int is_copyMac;
-	int is_anyOther;
 	
 } Space;
 
