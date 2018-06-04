@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <malloc.h>
 
-#define SPACE_NUMBER 5
+#define SPACE_NUMBER 16
 /*
 	Structures
 */
@@ -14,7 +14,7 @@ typedef struct Space {
 	
 	// Building ID & Name
 	int id;
-	char name[10];
+	char name[20];
 
 	// Facility Info
 	int is_cafe;
