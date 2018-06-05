@@ -36,6 +36,7 @@
       - TimeTableFileHandler.c (with TimeTable_info.txt)
       - GraphFileHandler.c (with Graph_info.txt)
   - implement key functions
+      - Check a validity of the time table.
+      - Create a new schedule between schedules.
+      - something else...
   - design user interfaces
-- Preparation for Presentation
-  - 
