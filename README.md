@@ -22,13 +22,16 @@
 ## Term Project
 ### SCHEDULE
 - interim report (180530)
+  - submitted on time.
 - presentation (180611)
 - final report (180625)
 
 ### TODOLIST
-- collecting data
-- draw campus graph
-- implement FileHandlers
-  - implement SpaceFileHandler.c with Space_info.txt
-  - implement TimeTableFileHandler.c with TimeTable_info.txt
-  - implement GraphFileHandler.c with Graph_info.txt
+- Data Collection
+  - collect facility information
+  - draw campus graph
+- Programming
+  - implement FileHandlers
+    - SpaceFileHandler.c (with Space_info.txt)
+    - TimeTableFileHandler.c (with TimeTable_info.txt)
+    - GraphFileHandler.c (with Graph_info.txt)
