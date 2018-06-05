@@ -32,6 +32,10 @@
   - draw campus graph
 - Programming
   - implement FileHandlers
-    - SpaceFileHandler.c (with Space_info.txt)
-    - TimeTableFileHandler.c (with TimeTable_info.txt)
-    - GraphFileHandler.c (with Graph_info.txt)
+      - SpaceFileHandler.c (with Space_info.txt)
+      - TimeTableFileHandler.c (with TimeTable_info.txt)
+      - GraphFileHandler.c (with Graph_info.txt)
+  - implement key functions
+  - design user interfaces
+- Preparation for Presentation
+  - 
