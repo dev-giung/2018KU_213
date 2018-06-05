@@ -19,6 +19,14 @@
 - pro3: Dijkstra & Floyd algorithm
 
 ## Term Project
-- 180530: INTERIM REPORT
-- 180611: PRESENTATION
-- 180625: FINAL REPORT
+### INTERIM REPORT (~ 180530)
+- submitted on time.
+
+### TODOLIST (~ 180610)
+- 
+
+### PRESENTATION (~ 180611)
+- someday...
+
+### FINAL REPORT (~ 180625)
+- someday...
