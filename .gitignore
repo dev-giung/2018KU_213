@@ -1,7 +1,13 @@
-# Compiled source #
+# Compiled Source #
 ###################
 *.exe
+
+# Docs, Imgs, Etc #
+###################
 *.pdf
 *.hwp
 *.docx
+*.pptx
+*.xlsx
+*.png
 *.zip
