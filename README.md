@@ -18,7 +18,7 @@
 - pro2: binary search tree
 - pro3: Dijkstra & Floyd algorithm
 
-### Term Project
+## Term Project
 - 180530: INTERIM REPORT
 - 180611: PRESENTATION
 - 180625: FINAL REPORT
