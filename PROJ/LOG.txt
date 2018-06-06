@@ -1,0 +1,36 @@
+############################################################
+
+[FileHandlers]
+
++ FileHandlers have been roughly implemented.
+    + SpaceFileHandler.c (with Space_info.txt)
+    + TimeTableFileHandler.c (with TimeTable_info.txt)
+    + GraphFileHandler.c (with Graph_info.txt)
+
+% Space_info.txt & Graph_info.txt files have fixed datas.
+% TimeTable_info.txt file stores the user's input data.
+
+% TODOLIST:
+    % implement the graph to have 'weight'...
+    % implement the timetable to get 'name of schedule'... (?)
+
+############################################################
+
+############################################################
+
+[UserInterface]
+
+% TODOLIST:
+    % design an user interface...
+    % a neat design is required...
+
+############################################################
+
+############################################################
+
+[KeyFunctions]
+
+% TODOLIST:
+    % implement key functions...
+
+############################################################
