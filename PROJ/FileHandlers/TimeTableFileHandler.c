@@ -114,7 +114,7 @@ void loadTXT_TimeTable(TimeTableNode myTT[DAYS_FOR_WEEK]) {
 	
 	for( j = 0; j < DAYS_FOR_WEEK; j++ ) {
 		
-		fscanf( myTimeTableFile, "#%d %s", &num);
+		fscanf( myTimeTableFile, "#%d %s\n", &num);
 		//printf("%d\n", num);
 		
 		for( i = 0; i < num; i++ ) {
