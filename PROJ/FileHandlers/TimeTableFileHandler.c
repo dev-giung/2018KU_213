@@ -118,7 +118,7 @@ void loadTXT_TimeTable(TimeTableNode myTT[DAYS_FOR_WEEK]) {
 		//printf("%d\n", num);
 		
 		for( i = 0; i < num; i++ ) {
-			fscanf( myTimeTableFile, "%d:%d\t%d:%d\t%d", &temp[0], &temp[1], &temp[2], &temp[3], &temp[4]);
+			fscanf( myTimeTableFile, "%d:%d\t%d:%d\t%d\n", &temp[0], &temp[1], &temp[2], &temp[3], &temp[4]);
 			//printf("%02d %02d %02d %02d %2d\n", temp[0], temp[1], temp[2], temp[3], temp[4]);
 			insert_TTNode( &myTT[j], create_TTNode(temp[0] + temp[1] / 60, temp[2] + temp[3] / 60, temp[4]) );
 		}

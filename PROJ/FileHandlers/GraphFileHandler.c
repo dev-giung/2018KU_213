@@ -116,7 +116,7 @@ void loadTXT_Graph(GraphType * myCG) {
 	
 	for( i = 0; i < numEdge; i++ ) {
 		
-		fscanf( myCampusGraphFile, "%d\t%d\t%d", &temp[0], &temp[1], &temp[2]);
+		fscanf( myCampusGraphFile, "%d\t%d\t%d\n", &temp[0], &temp[1], &temp[2]);
 		//printf("%d, %d, %d\n", temp[0], temp[1], temp[2]);
 		insertEdge_Graph( myCG, temp[0], temp[1] );
 		/*

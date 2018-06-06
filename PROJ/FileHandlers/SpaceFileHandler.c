@@ -51,7 +51,7 @@ void loadTXT_SpaceInfo(Space * mySpaceArray) {
 	
 	for( index = 0; index < SPACE_NUMBER; index++ ) {
 		
-		fscanf( mySpaceFile, "%d\t%s\t%d\t%d\t%d\t%d\t%d", 
+		fscanf( mySpaceFile, "%d\t%s\t%d\t%d\t%d\t%d\t%d\n", 
 			&mySpaceArray[index].id, &mySpaceArray[index].name, &mySpaceArray[index].is_cafe, 
 			&mySpaceArray[index].is_lounge, &mySpaceArray[index].is_convenience, 
 			&mySpaceArray[index].is_vendingMac, &mySpaceArray[index].is_copyMac
