@@ -11,7 +11,7 @@
 /*
 	Constants
 */
-#define MAX_VERTICES 17
+#define MAX_VERTICES 18
 #define INF 1000
 
 /*
