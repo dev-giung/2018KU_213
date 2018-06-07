@@ -55,7 +55,7 @@ void initialize_Graph(GraphType * g) {
 	}
 }
 
-void insertEdge_Graph(GraphType * g, int u, int v) {
+void insertEdge_Graph(GraphType * g, int u, int v, int weight) {
 	
 	GraphNode * new_node;
 	
@@ -67,6 +67,7 @@ void insertEdge_Graph(GraphType * g, int u, int v) {
 	
 	new_node = (GraphNode *)malloc(sizeof(GraphNode));
 	new_node->index = v;
+	new_node->weight = weight;
 	new_node->link = g->adj_list[u];
 	g->adj_list[u] = new_node;
 }
@@ -118,12 +119,7 @@ void loadTXT_Graph(GraphType * myCG) {
 		
 		fscanf( myCampusGraphFile, "%d\t%d\t%d\n", &temp[0], &temp[1], &temp[2]);
 		//printf("%d, %d, %d\n", temp[0], temp[1], temp[2]);
-		insertEdge_Graph( myCG, temp[0], temp[1] );
-		/*
-			TODO:
-				- implement distance value on Graph Structure...
-				- insert distance data(temp[2]) to myCG...
-		*/
+		insertEdge_Graph( myCG, temp[0], temp[1], temp[2] );
 	}
 	
 	fclose( myCampusGraphFile );
