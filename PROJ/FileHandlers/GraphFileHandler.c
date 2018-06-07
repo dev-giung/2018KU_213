@@ -10,6 +10,7 @@
 	Constants
 */
 #define MAX_VERTICES 50
+#define INF 1000
 
 /*
 	Structures
@@ -65,11 +66,19 @@ void insertEdge_Graph(GraphType * g, int u, int v, int weight) {
 		return;
 	}
 	
+	// u to v
 	new_node = (GraphNode *)malloc(sizeof(GraphNode));
 	new_node->index = v;
 	new_node->weight = weight;
 	new_node->link = g->adj_list[u];
 	g->adj_list[u] = new_node;
+	
+	// v to u
+	new_node = (GraphNode *)malloc(sizeof(GraphNode));
+	new_node->index = u;
+	new_node->weight = weight;
+	new_node->link = g->adj_list[v];
+	g->adj_list[v] = new_node;
 }
 
 void display_Graph(GraphType * g) {
@@ -89,6 +98,83 @@ void display_Graph(GraphType * g) {
 			p = p->link;
 		}
 	}
+}
+
+int get_Weight(GraphType * g, int sVertex, int eVertex) {
+	
+	GraphNode * temp = g->adj_list[sVertex];
+	
+	if( sVertex == eVertex ) {
+		return 0;
+	}
+	
+	while( temp != NULL ) {
+		
+		if( temp->index == eVertex ) {
+			return temp->weight;
+		}
+		
+		temp = temp->link;
+	}
+	
+	return INF;
+}
+
+void find_Path(GraphType * g, int sVertex, int eVertex) {
+	
+	int distance[MAX_VERTICES];
+	int found[MAX_VERTICES];
+	GraphNode * temp = NULL;
+	
+	int i = 0, u = 0;
+	
+	for( i = 0; i < MAX_VERTICES; i++ ) {
+		
+		distance[i] = get_Weight(g, sVertex, i);
+		found[i] = 0;
+	}
+	
+	found[sVertex] = 1;
+	
+	while( u != -1 ) {
+		
+		u = choose(distance, found);
+		
+		found[u] = 1;
+		temp = g->adj_list[u];
+		
+		while( temp != NULL ) {
+			
+			if( found[temp->index] == 0 ) {
+				
+				if( distance[u] + temp->weight < distance[temp->index] ) {
+					
+					distance[temp->index] = distance[u] + temp->weight;
+				}
+			}
+			
+			temp = temp->link;
+		}
+	}
+	
+	printf("\n\n\n%d\n", distance[eVertex]);
+}
+
+int choose(int distance[], int found[]) {
+	
+	int i, min, minpos;
+	
+	min = INF;
+	minpos = -1;
+	
+	for( i = 0; i < MAX_VERTICES; i++ ) {
+		if( distance[i] < min && found[i] == 0) {
+			min = distance[i];
+			minpos = i;
+		}
+	}
+	
+	return minpos;
 }
 
 /*
@@ -135,6 +221,8 @@ int main() {
 	loadTXT_Graph(&myCampusGraph);
 	
 	display_Graph(&myCampusGraph);
+	
+	find_Path(&myCampusGraph, 0, 8);
 	
 	return 0;
 }
