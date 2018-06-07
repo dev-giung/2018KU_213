@@ -1,36 +1,39 @@
 ############################################################
+180606 update:
 
-[FileHandlers]
+[+] FileHandlers have been roughly implemented.
+    [+] SpaceFileHandler.c (with Space_info.txt)
+    [+] TimeTableFileHandler.c (with TimeTable_info.txt)
+    [+] GraphFileHandler.c (with Graph_info.txt)
 
-+ FileHandlers have been roughly implemented.
-    + SpaceFileHandler.c (with Space_info.txt)
-    + TimeTableFileHandler.c (with TimeTable_info.txt)
-    + GraphFileHandler.c (with Graph_info.txt)
+[%] Space_info.txt & Graph_info.txt files have fixed datas.
+[%] TimeTable_info.txt file stores the user's input data.
 
-% Space_info.txt & Graph_info.txt files have fixed datas.
-% TimeTable_info.txt file stores the user's input data.
-
-% TODOLIST:
-    % implement the graph to have 'weight'...
-    % implement the timetable to get 'name of schedule'... (?)
-
-############################################################
-
-############################################################
-
-[UserInterface]
-
-% TODOLIST:
-    % design an user interface...
-    % a neat design is required...
+[%] TODOLIST:
+    [%] implement the graph to have 'weight'...
+    [%] implement the timetable to get 'name of schedule'... (?)
 
 ############################################################
 
 ############################################################
+180607 update:
 
-[KeyFunctions]
-
-% TODOLIST:
-    % implement key functions...
+[/] GraphFileHandler.c -> GraphHandler.c
+    [%] GraphHandler.c contains functions for campus graph.
+    [+] implement the Path structure.
+    [+] implement basic Path functions (insert, display).
+    [/] modify insert edge function for graph.
+    [+] implement shortest path finding function.
+        [%] using Dijkstra algorithm...
+        [%] find shortest path of sVertex to eVertex...
+        [%] get path & get distance...
 
 ############################################################
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+TODOLIST:
+    [UserInterface]
+        - design an user interface...
+        - a neat design is required...
+    [KeyFunctions]
+        - implement key functions...
