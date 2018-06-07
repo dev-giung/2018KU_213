@@ -1,6 +1,8 @@
 /*
-	GraphFileHandler.c contains functions for file loading.
-	- Graph_info.txt
+	GraphHandler.c contains functions for campus graph.
+	- Path Functions for <Path> structure
+	- Graph Functions for <GraphType> structure
+	- File Fucntions for Graph_info.txt
 */
 
 #include <stdio.h>
