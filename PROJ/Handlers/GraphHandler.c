@@ -71,9 +71,23 @@ void insert_Path(Path * p, int point) {
 	last_node->link = new_node;
 }
 
-void display_Path(Path * p) {
+int getDistance_Path(GraphType * g, Path p) {
 	
-	Path * cur_node = p;
+	int distance = 0;
+	Path * cur = &p;
+	
+	while( cur != NULL && cur->link != NULL ) {
+		
+		distance += get_Weight(g, cur->point, cur->link->point);
+		cur = cur->link;
+	}
+	
+	return distance;
+}
+
+void display_Path(Path p) {
+	
+	Path * cur_node = &p;
 	
 	while( cur_node != NULL ) {
 		printf("%d -> ", cur_node->point);
@@ -166,7 +180,7 @@ int get_Weight(GraphType * g, int sVertex, int eVertex) {
 	return INF;
 }
 
-void find_Path(GraphType * g, int sVertex, int eVertex) {
+Path get_Path(GraphType * g, int sVertex, int eVertex) {
 	
 	int distance[MAX_VERTICES];
 	int found[MAX_VERTICES];
@@ -221,13 +235,15 @@ void find_Path(GraphType * g, int sVertex, int eVertex) {
 		insert_Path(&myPath, i);
 		i = path[i];
 	}
-	
 	insert_Path(&myPath, sVertex);
 	
+	/*
 	printf("\npath (linked list): ");
 	display_Path(&myPath);
 	
 	printf("\ndistance of the path: %d\n", distance[eVertex]);
+	*/
+	return myPath;
 }
 
 int choose(int distance[], int found[]) {
@@ -286,13 +302,17 @@ void loadTXT_Graph(GraphType * myCG) {
 */
 int main() {
 	
-	initialize_Graph(&myCampusGraph);
+	Path pathPath;
 	
+	initialize_Graph(&myCampusGraph);
 	loadTXT_Graph(&myCampusGraph);
 	
 	display_Graph(&myCampusGraph);
 	
-	find_Path(&myCampusGraph, 1, 6);
+	pathPath = get_Path(&myCampusGraph, 16, 1);
+	
+	display_Path(pathPath);
+	printf( "%d", getDistance_Path(&myCampusGraph, pathPath) );
 	
 	return 0;
 }
