@@ -9,7 +9,7 @@
 /*
 	Constants
 */
-#define MAX_VERTICES 50
+#define MAX_VERTICES 17
 #define INF 1000
 
 /*
@@ -36,11 +36,49 @@ typedef struct GraphType {
 
 } GraphType;
 
+typedef struct Path {
+	
+	int point;
+	
+	struct Path * link;
+	
+} Path;
+
 /*
 	Global Variables
 */
 char * GraphFileName = "Graph_info.txt";
 GraphType myCampusGraph;
+
+/*
+	Path Functions
+*/
+void insert_Path(Path * p, int point) {
+	
+	Path * new_node = NULL;
+	Path * last_node = p;
+	
+	while( last_node->link != NULL ) {
+		
+		last_node = last_node->link;
+	}
+	
+	new_node = (Path *)malloc(sizeof(Path));
+	new_node->point = point;
+	new_node->link = last_node->link;
+	last_node->link = new_node;
+}
+
+void display_Path(Path * p) {
+	
+	Path * cur_node = p;
+	
+	while( cur_node != NULL ) {
+		printf("%d -> ", cur_node->point);
+		cur_node = cur_node->link;
+	}
+	printf("NULL\n");
+}
 
 /*
 	Graph Functions
@@ -104,6 +142,12 @@ int get_Weight(GraphType * g, int sVertex, int eVertex) {
 	
 	GraphNode * temp = g->adj_list[sVertex];
 	
+	if( sVertex >= MAX_VERTICES || eVertex >= MAX_VERTICES ) {
+		
+		printf("Error : vertex index out of range.");
+		return INF;
+	}
+	
 	if( sVertex == eVertex ) {
 		return 0;
 	}
@@ -124,21 +168,33 @@ void find_Path(GraphType * g, int sVertex, int eVertex) {
 	
 	int distance[MAX_VERTICES];
 	int found[MAX_VERTICES];
+	int path[MAX_VERTICES];
 	GraphNode * temp = NULL;
+	int i, u;
+	Path myPath = {eVertex, NULL};
 	
-	int i = 0, u = 0;
+	if( sVertex >= MAX_VERTICES || eVertex >= MAX_VERTICES ) {
+		
+		printf("Error : vertex index out of range.");
+		return;
+	}
 	
 	for( i = 0; i < MAX_VERTICES; i++ ) {
 		
 		distance[i] = get_Weight(g, sVertex, i);
 		found[i] = 0;
+		path[i] = -1;
 	}
 	
 	found[sVertex] = 1;
 	
-	while( u != -1 ) {
+	while( 1 ) {
 		
 		u = choose(distance, found);
+		
+		if( u == -1 ) {
+			break;
+		}
 		
 		found[u] = 1;
 		temp = g->adj_list[u];
@@ -150,6 +206,7 @@ void find_Path(GraphType * g, int sVertex, int eVertex) {
 				if( distance[u] + temp->weight < distance[temp->index] ) {
 					
 					distance[temp->index] = distance[u] + temp->weight;
+					path[temp->index] = u;
 				}
 			}
 			
@@ -157,7 +214,18 @@ void find_Path(GraphType * g, int sVertex, int eVertex) {
 		}
 	}
 	
-	printf("\n\n\n%d\n", distance[eVertex]);
+	i = path[eVertex];
+	while( i != -1 ) {
+		insert_Path(&myPath, i);
+		i = path[i];
+	}
+	
+	insert_Path(&myPath, sVertex);
+	
+	printf("\npath (linked list): ");
+	display_Path(&myPath);
+	
+	printf("\ndistance of the path: %d\n", distance[eVertex]);
 }
 
 int choose(int distance[], int found[]) {
@@ -222,7 +290,7 @@ int main() {
 	
 	display_Graph(&myCampusGraph);
 	
-	find_Path(&myCampusGraph, 0, 8);
+	find_Path(&myCampusGraph, 1, 6);
 	
 	return 0;
 }
