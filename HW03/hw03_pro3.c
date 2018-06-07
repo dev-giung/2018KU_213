@@ -39,8 +39,6 @@ void dijkstra(int graph[][MAX_VERTICES], int start, int end) {
 		// get the vertex in 'unvisited set' which have the smallest distance
 		u = choose(distance, found);
 		
-		printf("[%d] ", u);
-		
 		// and the vetex moves to the 'visited set'
 		found[u] = 1;
 		
