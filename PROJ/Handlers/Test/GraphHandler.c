@@ -11,7 +11,8 @@
 /*
 	Constants
 */
-#define MAX_VERTICES 18
+//#define MAX_VERTICES 18
+#define MAX_VERTICES 160
 #define INF 10000
 
 /*
@@ -49,7 +50,8 @@ typedef struct Path {
 /*
 	Global Variables
 */
-char * GraphFileName = "Graph_info.txt";
+//char * GraphFileName = "Graph_info.txt";
+char * GraphFileName = "Graph_info_BCGsample.txt";
 GraphType myCampusGraph;
 
 /*
@@ -264,6 +266,46 @@ int choose(int distance[], int found[]) {
 }
 
 /*
+	Floyd for test...
+*/
+void floyd(GraphType * graph, int a, int b) {
+	
+	// define a distance matrix
+	int dMatrix[MAX_VERTICES][MAX_VERTICES];
+	
+	// define index variables
+	int i, j, k;
+	
+	// initialize the distance matrix
+	for( i = 0; i < MAX_VERTICES; i++ ) {
+		for( j = 0; j < MAX_VERTICES; j++ ) {
+			dMatrix[i][j] = get_Weight(graph, i, j);
+		}
+	}
+	
+	// generate distance matrix (by Floyd algorithm)
+	for( k = 0; k < MAX_VERTICES; k++ ) {
+		for( i = 0; i < MAX_VERTICES; i++ ) {
+			for( j = 0; j < MAX_VERTICES; j++ ) {
+				if( dMatrix[i][j] > dMatrix[i][k] + dMatrix[k][j] ) {
+					dMatrix[i][j] = dMatrix[i][k] + dMatrix[k][j];
+				}
+			}
+		}
+	}
+	
+	/*
+	for( i = 0; i < MAX_VERTICES; i++ ) {
+		for( j = 0; j < MAX_VERTICES; j++ ) {
+			printf("%3d ", dMatrix[i][j]);
+		}
+		printf("\n");
+	}
+	*/
+	printf("%3d", dMatrix[a][b]);
+}
+
+/*
 	File Handler Functions
 */
 void loadTXT_Graph(GraphType * myCG) {
@@ -309,10 +351,12 @@ int main() {
 	
 	//display_Graph(&myCampusGraph);
 	
-	pathPath = get_Path(&myCampusGraph, 0, 13);
+	pathPath = get_Path(&myCampusGraph, 18, 143);
 	
 	display_Path(pathPath);
 	printf( "%d\n\n\n", getDistance_Path(&myCampusGraph, pathPath) );
+	
+	floyd(&myCampusGraph, 18, 143);
 	
 	return 0;
 }
