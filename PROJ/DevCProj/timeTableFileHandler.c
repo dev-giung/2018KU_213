@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <malloc.h>
+#include <string.h>
 #include "timeTableHandle.h"
 
 /*
@@ -22,7 +23,7 @@ void initialize_TTList(TimeTableNode *phead) {
 	
 }
 
-TimeTableNode *create_TTNode(double sTime, double eTime, int posIndex) {
+TimeTableNode *create_TTNode(double sTime, double eTime, int posIndex, char name[]) {
 
 	TimeTableNode *new_node = NULL;
 
@@ -31,6 +32,7 @@ TimeTableNode *create_TTNode(double sTime, double eTime, int posIndex) {
 	new_node->sTime = sTime;
 	new_node->eTime = eTime;
 	new_node->posIndex = posIndex;
+	strcpy( new_node->name, name );
 
 	new_node->llink = NULL;
 	new_node->rlink = NULL;
@@ -111,9 +113,7 @@ void loadTXT_TimeTable(TimeTableNode myTT[DAYS_FOR_WEEK]) {
 
 		for ( i = 0; i < num; i++ ) {
 			fscanf(myTimeTableFile, "%d:%d\t%d:%d\t%d\t%s\n", &temp[0], &temp[1], &temp[2], &temp[3], &temp[4], &tempString);
-			insert_TTNode(&myTT[j], create_TTNode(temp[0] + temp[1] / 60.0, temp[2] + temp[3] / 60.0, temp[4]));
-			
-			// TODO: load <name> variable from text file...
+			insert_TTNode(&myTT[j], create_TTNode(temp[0] + temp[1] / 60.0, temp[2] + temp[3] / 60.0, temp[4], tempString));
 		}
 		
 		fscanf(myTimeTableFile, "\n");

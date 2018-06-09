@@ -67,15 +67,16 @@ void checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo
 		
 		while( curr_node != NULL && curr_node->rlink != head_node ) {
 			
+			printf("%s -> %s\n", curr_node->name, curr_node->rlink->name);
+			
 			restTime = ( curr_node->rlink->sTime - curr_node->eTime ) * 60.0;
-			printf("restTime: %f\n", restTime);
+			printf("  - 여유시간: %2.0f분\n", restTime);
 			moveTime = getDistance_Path( myCampusGraph, get_Path( myCampusGraph, curr_node->rlink->posIndex, curr_node->posIndex ) );
-			printf("moveTime: %f\n", moveTime);
+			printf("  - 이동시간: %2.0f분\n", moveTime);
 			
 			if( restTime < moveTime ) {
 				
-				//printf("%s\n", curr_node->name);
-				printf("문제발견!\n");
+				printf("    - 문제발견!\n", curr_node->name, curr_node->rlink->name);
 			}
 			
 			curr_node = curr_node->rlink;

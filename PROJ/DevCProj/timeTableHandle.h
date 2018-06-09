@@ -32,7 +32,7 @@ TimeTableNode myTimeTable[DAYS_FOR_WEEK];
 *
 */
 void initialize_TTList(TimeTableNode *phead);
-TimeTableNode *create_TTNode(double sTime, double eTime, int posIndex);
+TimeTableNode *create_TTNode(double sTime, double eTime, int posIndex, char name[]);
 void insert_TTNode(TimeTableNode *phead, TimeTableNode *new_node);
 void remove_TTNode(TimeTableNode *phead, TimeTableNode *removed);
 void display_TTList(TimeTableNode *phead);
