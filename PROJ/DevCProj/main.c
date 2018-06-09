@@ -15,39 +15,76 @@ void utility_list(Space sp);
 int daily_lecture_num(TimeTableNode * ttl);
 
 
-char * day[DAYS_FOR_WEEK] = {"Monday","Tuesday","Wednesday","Thursday","Friday"};
+char * day[DAYS_FOR_WEEK] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
 
 
 int main() {
-   //그래프 초기화 부분
-   //Path pathPath;
-   initialize_Graph(&myCampusGraph);
-   loadTXT_Graph(&myCampusGraph);
 
-
-   //Space 초기화 부분
-   loadTXT_SpaceInfo(SpaceInfo);
-   //print_SpaceInfo(SpaceInfo);
-
-   //시간표 초기화 부분
-   int i;
-   for (i = 0; i < DAYS_FOR_WEEK; i++) {
-      initialize_TTList(&myTimeTable[i]);
-   }
-   loadTXT_TimeTable(myTimeTable);
-   for (i = 0; i < DAYS_FOR_WEEK; i++) {
-      printf("< %d > < BEGIN >\n", i);
-      display_TTList(&myTimeTable[i]);
-      printf("< %d > < END >\n", i);
-   }
-
-   suggest_schedule(myTimeTable, SpaceInfo, &myCampusGraph);
+	int i;
+	
+	// load campus graph data
+	initialize_Graph(&myCampusGraph);
+	loadTXT_Graph(&myCampusGraph);
+	
+	// load space data
+	loadTXT_SpaceInfo(SpaceInfo);
+	
+	// load time table data
+	for ( i = 0; i < DAYS_FOR_WEEK; i++ ) {
+		initialize_TTList(&myTimeTable[i]);
+	}
+	loadTXT_TimeTable(myTimeTable);
    
-   return 0;
-   
+	
+	for (i = 0; i < DAYS_FOR_WEEK; i++) {
+	    printf("< %d > < BEGIN >\n", i);
+	    display_TTList(&myTimeTable[i]);
+		printf("< %d > < END >\n", i);
+	}
+	
+	printf("\n\n\n");
+	
+	//suggest_schedule(myTimeTable, SpaceInfo, &myCampusGraph);
+	
+	checkVal_Schedule(myTimeTable, SpaceInfo, myCampusGraph);
+	
+	return 0;
+	
+}
+
+void checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[SPACE_NUMBER], GraphType * myCampusGraph) {
+	
+	int i;
+	double moveTime;
+	double restTime;
+	
+	for( i = 0; i < DAYS_FOR_WEEK; i++ ) {
+		
+		printf("check validity of %s's time table...\n", day[i]);
+		
+		TimeTableNode * head_node = &myTimeTable[i];
+		TimeTableNode * curr_node = head_node->rlink;
+		
+		while( curr_node != NULL && curr_node->rlink != head_node ) {
+			
+			restTime = ( curr_node->rlink->sTime - curr_node->eTime ) * 60.0;
+			printf("restTime: %f\n", restTime);
+			moveTime = getDistance_Path( myCampusGraph, get_Path( myCampusGraph, curr_node->rlink->posIndex, curr_node->posIndex ) );
+			printf("moveTime: %f\n", moveTime);
+			
+			if( restTime < moveTime ) {
+				
+				//printf("%s\n", curr_node->name);
+				printf("문제발견!\n");
+			}
+			
+			curr_node = curr_node->rlink;
+		}
+	}
 }
 
 void suggest_schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[SPACE_NUMBER], GraphType * g) {
+	
    int i,j;
    int lecture_num;                                    // 그날 수업 수
    int distance;                                       // 현재 위치와 다음 수업 위치간 최단경로(시간) 저장할 변수
