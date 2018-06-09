@@ -66,6 +66,7 @@ int checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[
 	int num = 0;
 	double moveTime;
 	double restTime;
+	Path tempPath;
 	
 	for( i = 0; i < DAYS_FOR_WEEK; i++ ) {
 		
@@ -76,11 +77,17 @@ int checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[
 		
 		while( curr_node != NULL && curr_node->rlink != head_node ) {
 			
-			printf("%s -> %s\n", curr_node->name, curr_node->rlink->name);
+			tempPath = get_Path( myCampusGraph, curr_node->rlink->posIndex, curr_node->posIndex );
+			
+			printf(">> %s -> %s\n", curr_node->name, curr_node->rlink->name);
+			
+			printf("  - 이동경로: ");
+			display_namedPath(tempPath);
 			
 			restTime = ( curr_node->rlink->sTime - curr_node->eTime ) * 60.0;
 			printf("  - 여유시간: %2.0f분\n", restTime);
-			moveTime = getDistance_Path( myCampusGraph, get_Path( myCampusGraph, curr_node->rlink->posIndex, curr_node->posIndex ) );
+			
+			moveTime = getDistance_Path( myCampusGraph, tempPath );
 			printf("  - 이동시간: %2.0f분\n", moveTime);
 			
 			if( restTime < moveTime ) {
@@ -96,9 +103,23 @@ int checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[
 		
 		printf("=== %s end\n\n", day[i]);
 	}
+	
+	printf("총 %d개의 유효하지 않은 계획이 존재합니다.", num);
 
 	return num;
 	 
+}
+
+void display_namedPath(Path p) {
+	
+	Path * cur_node = &p;
+	
+	while ( cur_node != NULL ) {
+		printf("%s -> ", SpaceInfo[cur_node->point].name);
+		cur_node = cur_node->link;
+	}
+	printf("END\n");
+	
 }
 
 void suggest_schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[SPACE_NUMBER], GraphType * g) {

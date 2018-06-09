@@ -53,7 +53,7 @@ void display_Path(Path p) {
 		printf("%d -> ", cur_node->point);
 		cur_node = cur_node->link;
 	}
-	printf("NULL\n");
+	printf("END\n");
 	
 }
 
