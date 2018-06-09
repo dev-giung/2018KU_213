@@ -60,7 +60,7 @@ void checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo
 	
 	for( i = 0; i < DAYS_FOR_WEEK; i++ ) {
 		
-		printf("check validity of %s's time table...\n", day[i]);
+		printf("=== check validity of %s's time table...\n", day[i]);
 		
 		TimeTableNode * head_node = &myTimeTable[i];
 		TimeTableNode * curr_node = head_node->rlink;
@@ -80,6 +80,8 @@ void checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo
 			
 			curr_node = curr_node->rlink;
 		}
+		
+		printf("=== %s end\n\n", day[i]);
 	}
 }
 
