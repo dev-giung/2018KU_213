@@ -52,15 +52,24 @@ int main() {
 	
 }
 
-void checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[SPACE_NUMBER], GraphType * myCampusGraph) {
+/*
+*
+*	check validity of the time table...
+*
+*	- print rest time(between two node) and move time...
+*	- return the number of unvalid part...
+*
+*/
+int checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[SPACE_NUMBER], GraphType * myCampusGraph) {
 	
 	int i;
+	int num = 0;
 	double moveTime;
 	double restTime;
 	
 	for( i = 0; i < DAYS_FOR_WEEK; i++ ) {
 		
-		printf("=== check validity of %s's time table...\n", day[i]);
+		printf("=== %s 시간표의 유효성을 검사합니다.\n", day[i]);
 		
 		TimeTableNode * head_node = &myTimeTable[i];
 		TimeTableNode * curr_node = head_node->rlink;
@@ -76,7 +85,10 @@ void checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo
 			
 			if( restTime < moveTime ) {
 				
-				printf("    - 문제발견!\n", curr_node->name, curr_node->rlink->name);
+				num++;
+				printf("    - 문제발견! 여유시간보다 이동시간이 깁니다.\n");
+				printf("    - 계속 검사하려면 아무 키나 누르세요...\n");
+				getch();
 			}
 			
 			curr_node = curr_node->rlink;
@@ -84,6 +96,9 @@ void checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo
 		
 		printf("=== %s end\n\n", day[i]);
 	}
+
+	return num;
+	 
 }
 
 void suggest_schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[SPACE_NUMBER], GraphType * g) {
