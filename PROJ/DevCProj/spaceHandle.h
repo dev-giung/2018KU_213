@@ -1,4 +1,4 @@
-#define SPACE_NUMBER 18
+#define SPACE_NUMBER 34
 
 /*
 *

@@ -1,4 +1,4 @@
-#define MAX_VERTICES 18
+#define MAX_VERTICES 34
 #define INF 10000
 
 /*

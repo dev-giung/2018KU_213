@@ -7,6 +7,9 @@
 
 #define LECTURE_REST 0.25            // 강의 사이 시간은 15분 이걸 소수로 환산
 
+int checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[SPACE_NUMBER], GraphType * myCampusGraph);
+void display_namedPath(Path p);
+
 void suggest_schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[SPACE_NUMBER], GraphType * g);
 double rest_time(TimeTableNode * ttl);
 void give_up(TimeTableNode * phead, TimeTableNode * removed, double between_time);
@@ -34,19 +37,20 @@ int main() {
 		initialize_TTList(&myTimeTable[i]);
 	}
 	loadTXT_TimeTable(myTimeTable);
-   
 	
+	/*
 	for (i = 0; i < DAYS_FOR_WEEK; i++) {
 	    printf("< %d > < BEGIN >\n", i);
 	    display_TTList(&myTimeTable[i]);
 		printf("< %d > < END >\n", i);
 	}
-	
+
 	printf("\n\n\n");
+	*/
 	
 	//suggest_schedule(myTimeTable, SpaceInfo, &myCampusGraph);
 	
-	checkVal_Schedule(myTimeTable, SpaceInfo, myCampusGraph);
+	i = checkVal_Schedule(myTimeTable, SpaceInfo, &myCampusGraph);
 	
 	return 0;
 	
@@ -96,7 +100,10 @@ int checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[
 				printf("    - 문제발견! 여유시간보다 이동시간이 깁니다.\n");
 				printf("    - 계속 검사하려면 아무 키나 누르세요...\n");
 				getch();
-			}
+			} else {
+				
+				sleep(1);
+			} 
 			
 			curr_node = curr_node->rlink;
 		}
