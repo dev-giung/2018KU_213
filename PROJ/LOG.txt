@@ -30,10 +30,6 @@
 
 ############################################################
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-TODOLIST:
-    [UserInterface]
-        - design an user interface...
-        - a neat design is required...
-    [KeyFunctions]
-        - implement key functions...
+180611 update:
+
+[/] complete(?)
