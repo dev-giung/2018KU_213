@@ -6,14 +6,6 @@
 #include "spaceHandle.h"
 #include "timeTableHandle.h"
 
-void UI_upLine();
-void UI_downLine();
-void UI_clear();
-void UI_viewTimeTable();
-void UI_FirstMain();
-void UI_SecondMain();
-void gotoxy(int x, int y);
-
 int checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[SPACE_NUMBER], GraphType * myCampusGraph);
 int getStopover_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[SPACE_NUMBER], GraphType * myCampusGraph);
 
@@ -21,6 +13,14 @@ void display_namedPath(Path p);
 void utility(Space SpaceInfo[SPACE_NUMBER], int ID);
 void utility_list(Space sp);
 void findStopover(Space SpaceInfo[SPACE_NUMBER], GraphType * myCampusGraph, int sVertex, int eVertex, int type, double restTime);
+
+void UI_upLine();
+void UI_downLine();
+void UI_clear();
+void UI_viewTimeTable();
+void UI_FirstMain();
+void UI_SecondMain();
+void gotoxy(int x, int y);
 
 char * day[DAYS_FOR_WEEK] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
 
@@ -83,77 +83,6 @@ int main() {
 	
 	return 0;
 	
-}
-
-/*
-*
-*	display user interface...
-*
-*/
-void UI_upLine() {
-	printf("┌──────────");
-	printf("──────────");
-	printf("──────────┐\n");
-}
-
-void UI_downLine() {
-	printf("└──────────");
-	printf("──────────");
-	printf("──────────┘\n");
-}
-
-void UI_clear() {
-	system("cls");
-}
-
-void UI_viewTimeTable() {
-	int i;
-	
-	for (i = 0; i < DAYS_FOR_WEEK; i++) {
-	    printf("< %d > < BEGIN >\n", i);
-	    display_TTList(&myTimeTable[i]);
-		printf("< %d > < END >\n", i);
-	}
-
-	printf("\n\n\n");
-	
-} 
-
-void UI_FirstMain() {
-	UI_upLine();
-	printf("│        Sample Program        │\n");
-	UI_downLine();
-	UI_upLine();
-	printf("│  1. 시간표 입력하기          │\n");
-	printf("│  2. 시간표 불러오기          │\n");
-	printf("│  9. 프로그램 종료            │\n");
-	UI_downLine();
-	UI_upLine();
-	printf("│  Select:                     │\n");
-	UI_downLine();
-	
-	gotoxy(12, 10);
-}
-
-void UI_SecondMain() {
-	UI_upLine();
-	printf("│        Sample Program        │\n");
-	UI_downLine();
-	UI_upLine();
-	printf("│  1. 시간표 유효성 검사하기   │\n");
-	printf("│  2. 공강에 일정 추가하기     │\n");
-	printf("│  9. 프로그램 종료            │\n");
-	UI_downLine();
-	UI_upLine();
-	printf("│  Select:                     │\n");
-	UI_downLine();
-	
-	gotoxy(12, 10);
-}
-
-void gotoxy(int x, int y) {
-    COORD Pos = { x-1, y-1 };
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
 
 /*
@@ -466,4 +395,75 @@ void findStopover(Space SpaceInfo[SPACE_NUMBER], GraphType * myCampusGraph, int 
 		}
 		
 	}
+}
+
+/*
+*
+*	display user interface...
+*
+*/
+void UI_upLine() {
+	printf("┌──────────");
+	printf("──────────");
+	printf("──────────┐\n");
+}
+
+void UI_downLine() {
+	printf("└──────────");
+	printf("──────────");
+	printf("──────────┘\n");
+}
+
+void UI_clear() {
+	system("cls");
+}
+
+void UI_viewTimeTable() {
+	int i;
+	
+	for (i = 0; i < DAYS_FOR_WEEK; i++) {
+	    printf("< %d > < BEGIN >\n", i);
+	    display_TTList(&myTimeTable[i]);
+		printf("< %d > < END >\n", i);
+	}
+
+	printf("\n\n\n");
+	
+} 
+
+void UI_FirstMain() {
+	UI_upLine();
+	printf("│        Sample Program        │\n");
+	UI_downLine();
+	UI_upLine();
+	printf("│  1. 시간표 입력하기          │\n");
+	printf("│  2. 시간표 불러오기          │\n");
+	printf("│  9. 프로그램 종료            │\n");
+	UI_downLine();
+	UI_upLine();
+	printf("│  Select:                     │\n");
+	UI_downLine();
+	
+	gotoxy(12, 10);
+}
+
+void UI_SecondMain() {
+	UI_upLine();
+	printf("│        Sample Program        │\n");
+	UI_downLine();
+	UI_upLine();
+	printf("│  1. 시간표 유효성 검사하기   │\n");
+	printf("│  2. 공강에 일정 추가하기     │\n");
+	printf("│  9. 프로그램 종료            │\n");
+	UI_downLine();
+	UI_upLine();
+	printf("│  Select:                     │\n");
+	UI_downLine();
+	
+	gotoxy(12, 10);
+}
+
+void gotoxy(int x, int y) {
+    COORD Pos = { x-1, y-1 };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
