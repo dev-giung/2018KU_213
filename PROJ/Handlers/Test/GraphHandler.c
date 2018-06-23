@@ -295,14 +295,17 @@ void floyd(GraphType * graph, int a, int b) {
 	}
 	
 	/*
+	
 	for( i = 0; i < MAX_VERTICES; i++ ) {
 		for( j = 0; j < MAX_VERTICES; j++ ) {
 			printf("%3d ", dMatrix[i][j]);
 		}
 		printf("\n");
 	}
+	
 	*/
-	printf("%3d", dMatrix[a][b]);
+	
+	//printf("%3d", dMatrix[a][b]);
 }
 
 /*
@@ -351,12 +354,14 @@ int main() {
 	
 	//display_Graph(&myCampusGraph);
 	
-	pathPath = get_Path(&myCampusGraph, 18, 143);
+	//pathPath = get_Path(&myCampusGraph, 18, 143);
 	
-	display_Path(pathPath);
-	printf( "%d\n\n\n", getDistance_Path(&myCampusGraph, pathPath) );
+	//display_Path(pathPath);
+	//printf( "%d\n\n\n", getDistance_Path(&myCampusGraph, pathPath) );
 	
+	printf("floyd start\n");
 	floyd(&myCampusGraph, 18, 143);
+	printf("end\n");
 	
 	return 0;
 }
