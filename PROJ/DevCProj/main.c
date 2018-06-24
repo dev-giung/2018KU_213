@@ -113,8 +113,11 @@ int checkVal_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceInfo[
 			
 			tempPath = get_Path( myCampusGraph, curr_node->rlink->posIndex, curr_node->posIndex );
 			
-			printf("= (%02d : %02d) %s ", (int)curr_node->sTime, (int)(curr_node->sTime - (int)curr_node->sTime) * 60, curr_node->name);
-			printf(">> (%02d : %02d) %s \n", (int)curr_node->rlink->sTime, (int)(curr_node->rlink->sTime - (int)curr_node->rlink->sTime) * 60, curr_node->rlink->name);
+			printf( "= (%02d:%02d ~", (int)curr_node->sTime, (int)((curr_node->sTime - (int)curr_node->sTime) * 60) );
+			printf( " %02d:%02d) %s ", (int)curr_node->eTime, (int)((curr_node->eTime - (int)curr_node->eTime) * 60), curr_node->name );
+			
+			printf( ">> (%02d:%02d ~", (int)curr_node->rlink->sTime, (int)((curr_node->rlink->sTime - (int)curr_node->rlink->sTime) * 60) );
+			printf( " %02d:%02d) %s\n", (int)curr_node->rlink->eTime, (int)((curr_node->rlink->eTime - (int)curr_node->rlink->eTime) * 60), curr_node->rlink->name );
 			
 			printf("  - 이동경로: ");
 			display_namedPath(tempPath);
@@ -181,8 +184,11 @@ int getStopover_Schedule(TimeTableNode myTimeTable[DAYS_FOR_WEEK], Space SpaceIn
 			
 			tempPath = get_Path( myCampusGraph, curr_node->rlink->posIndex, curr_node->posIndex );
 			
-			printf("= (%02d : %02d) %s ", (int)curr_node->sTime, (int)(curr_node->sTime - (int)curr_node->sTime) * 60, curr_node->name);
-			printf(">> (%02d : %02d) %s \n", (int)curr_node->rlink->sTime, (int)(curr_node->rlink->sTime - (int)curr_node->rlink->sTime) * 60, curr_node->rlink->name);
+			printf( "= (%02d:%02d ~", (int)curr_node->sTime, (int)((curr_node->sTime - (int)curr_node->sTime) * 60) );
+			printf( " %02d:%02d) %s ", (int)curr_node->eTime, (int)((curr_node->eTime - (int)curr_node->eTime) * 60), curr_node->name );
+			
+			printf( ">> (%02d:%02d ~", (int)curr_node->rlink->sTime, (int)((curr_node->rlink->sTime - (int)curr_node->rlink->sTime) * 60) );
+			printf( " %02d:%02d) %s\n", (int)curr_node->rlink->eTime, (int)((curr_node->rlink->eTime - (int)curr_node->rlink->eTime) * 60), curr_node->rlink->name );
 			
 			printf("  - 이동경로: ");
 			display_namedPath(tempPath);
